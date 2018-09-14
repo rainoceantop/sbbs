@@ -17,7 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route::resource('thread', 'ThreadController');
+Route::middleware('auth')->get('thread/create', 'ThreadController@create');
+Route::middleware('auth')->get('thread/edit/{thread}', 'ThreadController@edit');
+Route::get('thread/{thread}', 'ThreadController@show');

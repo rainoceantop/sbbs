@@ -73,13 +73,13 @@
             <div class="container">
                 @section('content')
                 <div class="row">
-                    <div class="col-lg-9">
+                    <section class="col-lg-9 left">
                         @yield('main')
-                    </div>
-                    <div class="col-lg-3 d-lg-block">
-                        <a role="button" class="btn btn-primary btn-block mb-3" href="{{ route('thread.create') }}">发新帖</a>
+                    </section>
+                    <section class="col-lg-3 d-lg-block right">
+                        <a role="button" class="btn btn-primary btn-block mb-3" href="{{ url('thread/create') }}">发新帖</a>
                         @yield('aside')
-                    </div>
+                    </section>
                 </div>
                 @show
             </div>

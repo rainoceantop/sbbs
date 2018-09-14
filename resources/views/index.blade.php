@@ -7,7 +7,4 @@
 @endsection
 
 @section('aside')
-<card-intro></card-intro>
-<card-forum></card-forum>
-<card-user></card-user>
 @endsection

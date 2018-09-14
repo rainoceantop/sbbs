@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('threads', 'ThreadController@index')->name('getThreads');
+Route::get('thread/{thread}', 'ThreadController@get')->name('getThread');
+Route::post('thread', 'ThreadController@store')->name('addThread');
+Route::put('thread', 'ThreadController@store')->name('updThread');
+Route::delete('thread/{thread}', 'ThreadController@destroy')->name('delThread');

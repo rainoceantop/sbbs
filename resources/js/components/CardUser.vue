@@ -33,7 +33,7 @@
 export default {
   data() {
     return {
-      user_logo: "imgs/user.jpeg",
+      user_logo: "/imgs/user.jpeg",
       user_name: "卡西莫多",
       user_thread_count: 201,
       today_thread_count: 3,

@@ -21,6 +21,42 @@ header{
 // 内容样式
 main{
   padding-top: 1rem;
+
+  // 左边主要页面内容
+  section.left{
+    .card-thread{
+      section.thread-title{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+
+        img{
+          width: 2.4rem;
+          height: 2.4rem;
+          border-radius: 1.2rem;
+          margin-right: 1rem;
+        }
+        .thread-intro{
+
+        }
+      }
+      section.thread-body{
+
+      }
+    }
+  }
+  // 右边卡片
+  section.right{
+    .user-img{
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+      border: 1px lightgray solid;
+      padding: 2px;
+      margin-bottom: 1rem;
+    }
+  }
+
 }
 
 // 页脚样式
