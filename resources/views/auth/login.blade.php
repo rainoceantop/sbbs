@@ -22,8 +22,12 @@
 
                         <div class="form-group">
                             <label for="email" class="col-form-label text-md-right">{{ __('帐号') }}</label>
-
-                            <input id="email" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="username-prepend"><i class="fas fa-user"></i></i></span>
+                                </div>
+                                <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" aria-describedby="username-prepend" required autofocus>
+                            </div>
 
                             @if ($errors->has('title'))
                                 <span class="invalid-feedback" role="alert">
@@ -34,8 +38,12 @@
 
                         <div class="form-group">
                             <label for="password" class="col-form-label text-md-right">{{ __('密码') }}</label>
-
-                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="password-prepend"><i class="fas fa-lock"></i></span>
+                                </div>
+                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" aria-describedby="username-prepend" name="password" required>
+                            </div>
 
                             @if ($errors->has('password'))
                                 <span class="invalid-feedback" role="alert">

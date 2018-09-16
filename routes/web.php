@@ -11,12 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'ThreadController@index');
 
 Auth::routes();
 
-Route::middleware('auth')->get('thread/create', 'ThreadController@create');
-Route::middleware('auth')->get('thread/edit/{thread}', 'ThreadController@edit');
-Route::get('thread/{thread}', 'ThreadController@show');
+Route::resource('thread', 'ThreadController')->except(['index', 'update']);
+Route::put('thread', 'ThreadController@store')->name('thread.update');

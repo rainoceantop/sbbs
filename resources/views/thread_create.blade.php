@@ -5,38 +5,31 @@
 @endsection
 
 @section('content')
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 <?php
 $edit = isset($thread) ? TRUE : FALSE
 ?>
 <div class="row">
     <div class="col-lg-10 mx-auto">
+        @include('inc.message')
         <div class="card">
             <div class="card-header">
                 发表帖子
             </div>
             <div class="card-body">
-                <form action="{{ $edit ? route('addThread') : route('updThread') }}" method="POST">
+                <form action="{{ $edit ? route('thread.update') : route('thread.store') }}" method="POST">
+                    @csrf
                     @if($edit)
                         @method('PUT')
-                        <input type="hidden" name="thread_id" value="{{ $thread->id }}">
+                        <input type="hidden" name="thread_id" value="{{ $thread -> id }}">
                     @endif
                     @auth
                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     @endauth
                     <div class="form-group">
-                        <input type="text" class="form-control" name="title" placeholder="标题" value="{{ $edit? $thread->title : '' }}">
+                        <input type="text" class="form-control" name="title" placeholder="标题" value="{{ empty(old('title')) ? ($edit? $thread->title : '') : old('title') }}">
                     </div>
                     <div id="editormd" class="form-control">
-                        <textarea style="display:none;">{{ $edit? $thread->body : '' }}</textarea>
+                        <textarea style="display:none;" name="body_md">{{ empty(old('body_md')) ? ($edit? $thread->body_md : '') : old('body_md') }}</textarea>
                     </div>
                     <button class="btn btn-primary btn-block thread-create-button" type="submit">发表帖子</button>
                 </form>

@@ -3,8 +3,9 @@
 @section('title', '首页')
 
 @section('main')
-<home-page></home-page>
+@include('inc.threads')
 @endsection
 
 @section('aside')
+
 @endsection
