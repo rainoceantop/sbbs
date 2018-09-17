@@ -12,4 +12,11 @@ class TagGroupController extends Controller
         TagGroup::create($request->all());
         return redirect()->back();
     }
+
+    public function destroy($id)
+    {
+        $tagGroup = TagGroup::findOrFail($id);
+        $tagGroup->delete();
+        echo TRUE;
+    }
 }

@@ -25,16 +25,21 @@ class TagController extends Controller
             $this->destroy($tags_id);
         }
         // 处理新标签
-        $new_tags = explode(' ', $request->tagNames);
+        $new_tags = explode(';', trim($request->tagNames));
+        print_r($request->tagNames);
+        echo "<br>";
+        print_r($new_tags);
         foreach($new_tags as $new_tag){
-            $new_tag = explode(',', $new_tag);
-            $tag_name = trim($new_tag[0]);
-            $tag_color = trim($new_tag[1]);
-            $tag = new Tag();
-            $tag->tag_group_id = $group_id;
-            $tag->name = $tag_name;
-            $tag->color = $tag_color;
-            $tag->save();
+            if(!empty($new_tag)){
+                $new_tag = explode(',', trim($new_tag));
+                $tag_name = trim($new_tag[0]);
+                $tag_color = trim($new_tag[1]);
+                $tag = new Tag();
+                $tag->tag_group_id = $group_id;
+                $tag->name = $tag_name;
+                $tag->color = $tag_color;
+                $tag->save();
+            }
         }
         return redirect()->back();
     }
