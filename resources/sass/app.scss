@@ -25,10 +25,8 @@ header{
 main{
   padding-top: 1rem;
 
-  // 左边主要页面内容
-  section.left{
-    // thread列表展示
-    .card-thread-list{
+  // thread列表展示
+  .card-thread-list{
       section.thread-title{
         @include thread-title-show;
       }
@@ -38,28 +36,49 @@ main{
           background-color: darken($color: #f8fafc, $amount: 2)
         }
       }
+  }
+  //thread内容展示
+  .card-thread{
+    section.thread-title{
+      @include thread-title-show;
     }
-    //thread内容展示
-    .card-thread{
-      section.thread-title{
-        @include thread-title-show;
-      }
-      section.thread-body{
+    section.thread-body{
 
-      }
+    }
+  } 
+  // forum板块管理区域 
+  .accordion{
+    .card-header{
+      background-color: white;
+      border: none;
+      box-shadow: 0 0 0 rgba(0, 0, 0, .4);
     }
   }
+  .user-img-1{
+    width: 6rem;
+    height: 6rem;
+    border-radius: 3rem;
+  }
 
-  // 右边卡片
-  section.right{
-    .user-img{
-      width: 100px;
-      height: 100px;
-      border-radius: 50px;
-      border: 1px lightgray solid;
-      padding: 2px;
-      margin-bottom: 1rem;
-    }
+  .user-img-2{
+    width: 4.8rem;
+    height: 4.8rem;
+    border-radius: 2.4rem;
+  }
+  .user-img-3{
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 1.8rem;
+  }
+  .user-img-4{
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 1.2rem;
+  }
+  .user-img-5{
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 0.6rem;
   }
 
 }

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', '帖子操作')
+
 @section('link')
 <link rel="stylesheet" href="{{ asset('editor.md/css/editormd.min.css') }}" />
 @endsection

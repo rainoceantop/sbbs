@@ -12,7 +12,7 @@
     <div class="card-body card-thread-list">
         @foreach($threads as $thread)
         <section class="thread-item thread-title">
-            <img src="{{ asset('imgs/user.jpeg') }}">
+            <img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3">
             <div class="thread-intro">
                 <h5 class="break-all"><a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a></h5>
                 <div class="d-flex small">

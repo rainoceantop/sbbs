@@ -10479,7 +10479,7 @@ main {
   padding-top: 1rem;
 }
 
-main section.left .card-thread-list section.thread-title {
+main .card-thread-list section.thread-title {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -10492,22 +10492,15 @@ main section.left .card-thread-list section.thread-title {
           align-items: flex-start;
 }
 
-main section.left .card-thread-list section.thread-title img {
-  width: 2.4rem;
-  height: 2.4rem;
-  border-radius: 1.2rem;
-  margin-right: .8rem;
-}
-
-main section.left .card-thread-list .thread-item {
+main .card-thread-list .thread-item {
   padding: .5rem;
 }
 
-main section.left .card-thread-list .thread-item:hover {
+main .card-thread-list .thread-item:hover {
   background-color: #f1f5f9;
 }
 
-main section.left .card-thread section.thread-title {
+main .card-thread section.thread-title {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -10520,19 +10513,40 @@ main section.left .card-thread section.thread-title {
           align-items: flex-start;
 }
 
-main section.left .card-thread section.thread-title img {
+main .accordion .card-header {
+  background-color: white;
+  border: none;
+  -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
+}
+
+main .user-img-1 {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 3rem;
+}
+
+main .user-img-2 {
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 2.4rem;
+}
+
+main .user-img-3 {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 1.8rem;
+}
+
+main .user-img-4 {
   width: 2.4rem;
   height: 2.4rem;
   border-radius: 1.2rem;
-  margin-right: .8rem;
 }
 
-main section.right .user-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50px;
-  border: 1px lightgray solid;
-  padding: 2px;
-  margin-bottom: 1rem;
+main .user-img-5 {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 0.6rem;
 }
 

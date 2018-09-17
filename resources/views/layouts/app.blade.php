@@ -49,8 +49,8 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#!">个人中心</a>
-                                <a class="dropdown-item" href="#!">论坛帖子</a>
+                                <a class="dropdown-item" href="{{ route('user.center', Auth::user()->id) }}">个人中心</a>
+                                <a class="dropdown-item" href="{{ route('user.threads', Auth::user()->id) }}">论坛帖子</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">

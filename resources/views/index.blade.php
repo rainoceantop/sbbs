@@ -7,5 +7,5 @@
 @endsection
 
 @section('aside')
-
+@include('inc.card-intro')
 @endsection

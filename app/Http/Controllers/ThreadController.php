@@ -44,7 +44,8 @@ class ThreadController extends Controller
         return redirect()->route('thread.show', [$thread]);
     }
 
-    public function show(Thread $thread){
+    public function show(Thread $thread)
+    {
         // 获取此id
         $thread = Thread::findOrFail($thread->id);
         // 渲染信息页面并携带id
