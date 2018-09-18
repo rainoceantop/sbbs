@@ -14,7 +14,12 @@
         <section class="thread-item thread-title">
             <img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3">
             <div class="thread-intro">
-                <h5 class="break-all"><a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a></h5>
+                <div class="thread-title-tags">
+                    <h5 class="break-all"><a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a></h5>
+                    @foreach($thread->tags as $tag)
+                    <span class="tag" @php echo "style='background-color:$tag->color'" @endphp><a href="">{{ $tag->name }}</a></span>
+                    @endforeach
+                </div>
                 <div class="d-flex small">
                     <span class="username">
                         <a href="user-33.htm" class="text-muted font-weight-bold">卡西莫多</a>

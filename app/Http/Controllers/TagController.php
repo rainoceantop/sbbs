@@ -17,25 +17,21 @@ class TagController extends Controller
         $tagGroup->name = $group_name;
         $tagGroup->save();
 
-        // 更新标签组标签
-        $old_tags = $tagGroup->tags->toArray();
-        // 将原来的所有标签删除
-        if(!empty($old_tags)){
-            $tags_id = array_column($old_tags, 'id');
-            $this->destroy($tags_id);
-        }
-        // 处理新标签
-        $new_tags = explode(';', trim($request->tagNames));
-        print_r($request->tagNames);
-        echo "<br>";
-        print_r($new_tags);
-        foreach($new_tags as $new_tag){
-            if(!empty($new_tag)){
-                $new_tag = explode(',', trim($new_tag));
-                $tag_name = trim($new_tag[0]);
-                $tag_color = trim($new_tag[1]);
-                $tag = new Tag();
+
+        // 处理标签
+        $tags = explode(';', trim($request->tagNames));
+
+        foreach($tags as $tag){
+            if(!empty($tag)){
+                $tag = explode(',', trim($tag));
+                $tag_identity = trim($tag[0]);
+                $tag_name = trim($tag[1]);
+                $tag_color = trim($tag[2]);
+                $tag = Tag::where('identity', '=', $tag_identity)->first();
+                if(empty($tag))
+                    $tag = new Tag();
                 $tag->tag_group_id = $group_id;
+                $tag->identity = $tag_identity;
                 $tag->name = $tag_name;
                 $tag->color = $tag_color;
                 $tag->save();

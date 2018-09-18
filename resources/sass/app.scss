@@ -37,6 +37,25 @@ main{
         }
       }
   }
+
+  .thread-title-tags{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+  }
+
+  .tag{
+    font-size: 12px;
+    padding: .1rem .4rem;
+    margin: 0 0 .4rem .4rem;
+    border-radius: .5rem;
+    a{
+      text-decoration: none;
+      color: whitesmoke;
+    }
+  }
+
   //thread内容展示
   .card-thread{
     section.thread-title{

@@ -10500,6 +10500,31 @@ main .card-thread-list .thread-item:hover {
   background-color: #f1f5f9;
 }
 
+main .thread-title-tags {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+main .tag {
+  font-size: 12px;
+  padding: .1rem .4rem;
+  margin: 0 0 .4rem .4rem;
+  border-radius: .5rem;
+}
+
+main .tag a {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
 main .card-thread section.thread-title {
   display: -webkit-box;
   display: -ms-flexbox;

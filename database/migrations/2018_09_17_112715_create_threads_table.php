@@ -20,7 +20,6 @@ class CreateThreadsTable extends Migration
             $table->string('title');
             $table->text('body');
             $table->text('body_md');
-            $table->string('tags');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

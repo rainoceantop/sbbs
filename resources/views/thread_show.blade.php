@@ -10,7 +10,7 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item active" aria-current="page"><a href="/"><i class="fas fa-home"></i></a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="/">板块</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="/">{{ $thread->forum->name }}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ $thread->title }}</li>
   </ol>
 </nav>
@@ -20,8 +20,13 @@
         <section class="thread-title">
             <img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3">
             <div class="thread-intro">
-                <h4 class="break-all">{{ $thread->title }}</h4>
-                <div class="d-flex justify-content-between small">
+                <div class="thread-title-tags">
+                    <h4 class="break-all">{{ $thread->title }}</h4>
+                    @foreach($tags as $tag)
+                    <span class="tag" @php echo "style='background-color:$tag->color'"; @endphp><a href="">{{ $tag->name }}</a></span>
+                    @endforeach
+                </div>
+                <div class="d-flex small">
                     <span class="username">
                         <a href="user-33.htm" class="text-muted font-weight-bold"><i class="fas fa-pencil-alt"></i> 卡西莫多</a>
                     </span>

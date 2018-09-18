@@ -43,28 +43,27 @@
             <div class="card-body">
                 <div class="input-group mb-3">
                     <div class="accordion w-100" id="accordionExample">
-                        @foreach($forums as $index => $forum)
+                        @foreach($forums as $forum)
                             <div class="card">
 
                                 <!-- 板块标题展示区域 -->
-                                <div class="card-header  text-center" id="forum{{ $index }}">
+                                <div class="card-header  text-center" id="forum{{ $forum->id }}">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ $index }}" aria-controls="collapse{{ $index }}">
+                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ $forum->id }}" aria-controls="collapse{{ $forum->id }}">
                                         {{ $forum->name }}
                                         </button>
                                     </h5>
                                 </div>
 
                                 <!-- 板块内容管理区域 -->
-                                <div id="collapse{{ $index }}" class="collapse" aria-labelledby="forum{{ $index }}" data-parent="#accordionExample">
+                                <div id="collapse{{ $forum->id }}" class="collapse" aria-labelledby="forum{{ $forum->id }}" data-parent="#accordionExample">
                                     <div class="card-body">
                                         <div class="forum-inside-item">
-
                                             标签组：
-                                            @foreach($forum['tagGroups'] as $index => $tagGroup)
-                                                <a href="/" class="text-right" data-toggle="modal" data-target="#new-tag-form-modal-{{ $index }}">{{ $tagGroup->name }}</a>
+                                            @foreach($forum['tagGroups'] as $tagGroup)
+                                                <a href="/" class="text-right" data-toggle="modal" data-target="#new-tag-form-modal-{{ $tagGroup->id }}">{{ $tagGroup->name }}</a>
                                                 <!-- Modal -->
-                                                <div class="modal fade" id="new-tag-form-modal-{{ $index }}" tabindex="-1" role="dialog">
+                                                <div class="modal fade" id="new-tag-form-modal-{{ $tagGroup->id }}" tabindex="-1" role="dialog">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -81,16 +80,16 @@
                                                                         <input type="text" name="tagGroupName" class="form-control" placeholder="标签组名称" value="{{ $tagGroup->name }}" required>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <textarea name="tagNames" rows="8" class="form-control" placeholder="标签编辑域" required>@foreach($tagGroup->tags as $tag){{ $tag->name }} , {{ $tag->color }}<?php echo " ;\n"; ?>@endforeach</textarea>
+                                                                        <textarea name="tagNames" rows="8" class="form-control" placeholder="标签编辑域" required>@foreach($tagGroup->tags as $tag){{  $tag->identity }} , {{ $tag->name }} , {{ $tag->color }}@php echo " ;\n"; @endphp@endforeach</textarea>
                                                                         <small class="text-muted">每一行都是一个标签，左边是标签名，右边是标签颜色，用英文逗号隔开，末尾加英文分号。如：
                                                                             <br>
-                                                                            功能增强 , #ffffff ;
+                                                                            1, 功能增强 , #ffffff ;
                                                                             <br>
-                                                                            风格模板 , #23sa21 ;
+                                                                            2, 风格模板 , #23sa21 ;
                                                                         </small>
                                                                     </div>
                                                                     <hr>
-                                                                    <button data-group_id="{{ $tagGroup->id }}" class="btn btn-danger delete-tag-group-submit-button">删除</button>
+                                                                    <button data-group_id="{{ $tagGroup->id }}" data-group_name="{{ $tagGroup->name }}" class="btn btn-danger delete-tag-group-submit-button">删除</button>
                                                                     <span class="float-right">
                                                                         <button type="button" class="btn btn-secondary edit-tag-group-close-button" data-dismiss="modal">关闭</button>
                                                                         <button type="button" class="btn btn-primary edit-tag-group-submit-button">编辑</button>
@@ -104,9 +103,9 @@
                                             @endforeach
 
                                             <!-- 右边新建标签组 -->
-                                            <a href="/" class="float-right" data-toggle="modal" data-target="#new-tag-group-form-modal-{{ $index }}">+ 新建标签组</a>
+                                            <a href="/" class="float-right" data-toggle="modal" data-target="#new-tag-group-form-modal-{{ $forum->id }}">+ 新建标签组</a>
                                             <!-- Modal -->
-                                            <div class="modal fade" id="new-tag-group-form-modal-{{ $index }}" tabindex="-1" role="dialog">
+                                            <div class="modal fade" id="new-tag-group-form-modal-{{ $forum->id }}" tabindex="-1" role="dialog">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -174,20 +173,22 @@ $(function(){
         })
     })
 
-    //编辑标签组标签按钮点击事件
+    //删除标签组标签按钮点击事件
     deleteTagGroupSubmitButtons.each(function(){
         $(this).on('click', function(){
             let group_id = $(this).data('group_id')
-            let that = this
-            $.ajax({
-                url: 'tagGroup/' + group_id,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                method: 'delete',
-                success: function(msg){
-                    alert('删除成功')
-                    window.location.reload()
-                }
-            })
+            let group_name = $(this).data('group_name')
+            if(confirm(`确定删除标签组：${group_name}吗？`)){
+                $.ajax({
+                    url: 'tagGroup/' + group_id,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    method: 'delete',
+                    success: function(msg){
+                        alert('删除成功')
+                        window.location.reload()
+                    }
+                })
+            }
         })
     })
 

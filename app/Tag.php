@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['tag_group_id', 'identity', 'name', 'color'];
 
     public function group()
     {
@@ -15,6 +15,6 @@ class Tag extends Model
 
     public function threads()
     {
-        return $this->belongsToMany('App\Thread');
+        return $this->belongsToMany('App\Thread', 'tag_thread', 'tag_identity', 'thread_id');
     }
 }

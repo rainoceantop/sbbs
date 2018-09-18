@@ -7,9 +7,9 @@
 @endsection
 
 @section('content')
-<?php
+@php
 $edit = isset($thread) ? TRUE : FALSE
-?>
+@endphp
 <div class="row">
     <div class="col-lg-10 mx-auto">
         @include('inc.message')
@@ -27,11 +27,23 @@ $edit = isset($thread) ? TRUE : FALSE
                     @auth
                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     @endauth
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="select-forum">板块</label>
+                        </div>
+                        <select class="custom-select" name="select-forum" id="select-forum">
+                            @foreach($forums as $forum)
+                                <option value="{{ $forum->id }}">{{ $forum->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="form-group">
                         <input type="text" class="form-control" name="title" placeholder="标题" value="{{ empty(old('title')) ? ($edit? $thread->title : '') : old('title') }}">
                     </div>
-                    <div id="editormd" class="form-control">
-                        <textarea style="display:none;" name="body_md">{{ empty(old('body_md')) ? ($edit? $thread->body_md : '') : old('body_md') }}</textarea>
+                    <div class="form-group select-tags-area">
+                    </div>
+                    <div id="editormd" class="form-group">
+                        <textarea style="display:none;" class="form-control" name="body_md">{{ empty(old('body_md')) ? ($edit? $thread->body_md : '') : old('body_md') }}</textarea>
                     </div>
                     <button class="btn btn-primary btn-block thread-create-button" type="submit">发表帖子</button>
                 </form>
@@ -52,6 +64,43 @@ $edit = isset($thread) ? TRUE : FALSE
             path : "/editor.md/lib/", // Autoload modules mode, codemirror, marked... dependents libs path
             saveHTMLToTextarea: true
         })
+
+        let selectForum = $('#select-forum')
+        let selectTagsArea = $('.select-tags-area')
+        let forum_id = selectForum.val()
+        let tagGroups = JSON.parse('@php echo $tagGroups @endphp')
+        // 初始化当前选择板块标签
+        getTags(forum_id)
+        
+        selectForum.on('change', function(){
+            forum_id = $(this).val()
+            getTags(forum_id)
+        })
+
+        function getTags(forum_id){
+            let html = ''
+            for(let i in tagGroups){
+                let tagGroup = tagGroups[i]
+                if(tagGroup.forum_id === parseInt(forum_id)){
+                    // 标签组展示
+                    html += `
+                    <p class="text-muted">
+                        ${tagGroups[i].name}:
+                    `
+                    // 获取标签组的标签
+                    let tags = tagGroup.tags
+                    for(let i in tags){
+                        html += `
+                        <input type="checkbox" name="tags[]" value=${tags[i].identity}>
+                        ${tags[i].name}
+                        `
+                    }
+
+                    html += `</p>`
+                }
+            }
+            selectTagsArea.html(html)
+        }
     })
 </script>
 @endsection

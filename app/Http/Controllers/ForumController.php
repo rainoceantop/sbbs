@@ -22,4 +22,5 @@ class ForumController extends Controller
         Forum::create($request->all());
         return redirect()->back();
     }
+
 }

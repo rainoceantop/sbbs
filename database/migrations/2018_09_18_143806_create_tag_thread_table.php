@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateThreadTagTable extends Migration
+class CreateTagThreadTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateThreadTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('thread_tag', function (Blueprint $table) {
+        Schema::create('tag_thread', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('thread_id');
-            $table->unsignedInteger('tag_id');
+            $table->unsignedInteger('tag_identity');
             $table->timestamps();
 
             $table->foreign('thread_id')->references('id')->on('threads')->onDelete('cascade');
-            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            $table->foreign('tag_identity')->references('identity')->on('tags');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateThreadTagTable extends Migration
     public function down()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('thread_tag');
+        Schema::dropIfExists('tag_thread');
     }
 }

@@ -26,12 +26,11 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="/"> 首页 <span class="sr-only">(current)</span></a>
                         </li>
+                        @foreach(App\Forum::all() as $forum)
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link" href="#">{{ $forum->name }}</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Disabled</a>
-                        </li>
+                        @endforeach
                     </ul>
                     <ul class="navbar-nav">
                         @guest
