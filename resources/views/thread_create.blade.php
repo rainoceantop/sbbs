@@ -32,8 +32,9 @@ $edit = isset($thread) ? TRUE : FALSE
                             <label class="input-group-text" for="select-forum">板块</label>
                         </div>
                         <select class="custom-select" name="select-forum" id="select-forum">
+                            <!-- 如果没有上次的值，则默认为板块id。如果有上次的值则默认上次的值 -->
                             @foreach($forums as $forum)
-                                <option value="{{ $forum->id }}">{{ $forum->name }}</option>
+                                <option value="{{ $forum->id }}" @if( (empty(old('select-forum'))? $forum_id : old('select-forum')) == $forum->id ) selected @endif>{{ $forum->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -43,7 +44,7 @@ $edit = isset($thread) ? TRUE : FALSE
                     <div class="form-group select-tags-area">
                     </div>
                     <div id="editormd" class="form-group">
-                        <textarea style="display:none;" class="form-control" name="body_md">{{ empty(old('body_md')) ? ($edit? $thread->body_md : '') : old('body_md') }}</textarea>
+                        <textarea style="display:none;" required class="form-control" name="body_md">{{ empty(old('body_md')) ? ($edit? $thread->body_md : '') : old('body_md') }}</textarea>
                     </div>
                     <button class="btn btn-primary btn-block thread-create-button" type="submit">发表帖子</button>
                 </form>

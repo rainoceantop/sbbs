@@ -10,7 +10,7 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item active" aria-current="page"><a href="/"><i class="fas fa-home"></i></a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="/">{{ $thread->forum->name }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('forum.show', [$thread->forum->id]) }}">{{ $thread->forum->name }}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ $thread->title }}</li>
   </ol>
 </nav>
@@ -23,7 +23,7 @@
                 <div class="thread-title-tags">
                     <h4 class="break-all">{{ $thread->title }}</h4>
                     @foreach($tags as $tag)
-                    <span class="tag" @php echo "style='background-color:$tag->color'"; @endphp><a href="">{{ $tag->name }}</a></span>
+                    <span class="tag" @php echo "style='background-color:$tag->color'"; @endphp><a href="{{ route('forum.show', [$tag->group->forum_id]) }}?tagids={{ $tag->identity }}">{{ $tag->name }}</a></span>
                     @endforeach
                 </div>
                 <div class="d-flex small">

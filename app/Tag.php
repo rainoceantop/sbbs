@@ -10,7 +10,7 @@ class Tag extends Model
 
     public function group()
     {
-        return $this->belongsTo('App\TagGroup');
+        return $this->belongsTo('App\TagGroup', 'tag_group_id');
     }
 
     public function threads()

@@ -10500,6 +10500,15 @@ main .card-thread-list .thread-item:hover {
   background-color: #f1f5f9;
 }
 
+main .nav_tag_list a {
+  color: #156470;
+  margin: .5rem;
+}
+
+main .nav_tag_list a.active {
+  font-weight: bolder;
+}
+
 main .thread-title-tags {
   display: -webkit-box;
   display: -ms-flexbox;

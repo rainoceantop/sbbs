@@ -1,4 +1,38 @@
-<div class="card">
+<table class="nav_tag_list mb-2">
+    @if(!empty($forum))
+    @foreach($forum->tagGroups as $index => $tagGroup)
+    <tr>
+        <td class="text-muted text-nowrap" align="right" valign="top">
+            {{ $tagGroup->name }}：
+        </td>
+        <td>
+            @php
+                // 每一组标签拷贝上次选择的标签
+                $new_tag_ids = $tag_ids;
+
+                // 全部：更改自己所在位置的标签id为0
+                $new_tag_ids[$index] = 0;
+                // 组合新的url
+                $all_url = implode('_', $new_tag_ids);
+            @endphp
+
+            <a href="{{ route('forum.show', [$forum->id]) }}?tagids={{ $all_url }}"  @if($tag_ids[$index] == 0) class="active" @endif>全部</a>
+
+            @foreach($tagGroup->tags as $tag)
+            @php
+                // 标签：更改自己所在位置的标签id
+                $new_tag_ids[$index] = $tag->identity;
+                // 组合新的url
+                $url = implode('_', $new_tag_ids);
+            @endphp
+            <a href="{{ route('forum.show', [$forum->id]) }}?tagids={{ $url }}"  @if($tag_ids[$index] == $tag->identity) class="active" @endif>{{ $tag->name }}</a>
+            @endforeach
+        </td>
+    </tr>
+    @endforeach
+    @endif
+</table>
+<div class="card mb-3">
     <div class="card-header">
         <ul class="nav nav-pills">
             <li class="nav-item">
@@ -17,7 +51,7 @@
                 <div class="thread-title-tags">
                     <h5 class="break-all"><a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a></h5>
                     @foreach($thread->tags as $tag)
-                    <span class="tag" @php echo "style='background-color:$tag->color'" @endphp><a href="">{{ $tag->name }}</a></span>
+                    <span class="tag" @php echo "style='background-color:$tag->color'" @endphp><a href="{{ route('forum.show', [$thread->forum_id]) }}?tagids={{ $tag->identity }}">{{ $tag->name }}</a></span>
                     @endforeach
                 </div>
                 <div class="d-flex small">
@@ -31,3 +65,4 @@
         @endforeach
     </div>
 </div>
+{{ $threads->links() }}

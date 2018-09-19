@@ -14,17 +14,19 @@ class ThreadController extends Controller
 
     public function index()
     {
-        $threads = Thread::paginate(10);
+        // 获取首页帖子
+        $threads = Thread::orderBy('created_at', 'desc')->paginate(10);
         foreach($threads as $thread){
             $thread['tags'] = $thread->tags()->select(['tags.identity', 'tags.name', 'tags.color'])->get();
         }
-        // dd($threads);
 
-        return view('index')->with('threads', $threads);
+        return view('index')->with('threads', $threads)
+                            ->with('forum_id', 0);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $forum_id = $request->fid;
         $forums = Forum::select(['id', 'name'])->get();
         $tagGroups = TagGroup::select(['id', 'forum_id', 'name'])->get();
         foreach($tagGroups as $tagGroup){
@@ -32,22 +34,33 @@ class ThreadController extends Controller
         }
         return view('thread_create')
             ->with('forums', $forums)
-            ->with('tagGroups', json_encode($tagGroups, JSON_UNESCAPED_UNICODE));
+            ->with('tagGroups', json_encode($tagGroups, JSON_UNESCAPED_UNICODE))
+            ->with('forum_id', $forum_id);
     }
 
     public function store(Request $request)
     {   
-        $request->validate([
+        $requiement = [
+            'select-forum' => 'required',
             'user_id' => 'required',
             'title' => 'required|string',
             'body_md' => 'required',
-            'tags' => 'required',
-        ], [
+        ];
+        $message = [
+            'select-form.required' => '请选择板块',
             'user_id.required' => '请先登录',
             'title.required' => '标题不能为空',
             'body_md.required' => '内容不能为空',
-            'tags.required' => '请至少选择一个标签',
-        ]);
+        ];
+
+        $request->validate($requiement, $message);
+
+        // 检测标签组是否不为空
+        $have_tags = !empty(Forum::find($request->input('select-forum'))->tagGroups->toArray());
+        // 如果标签组不为空，则验证
+        if($have_tags){
+            $request->validate(['tags' => 'required'], ['tags.required' => '请至少选择一个标签']);
+        }
 
         // 判断是post还是put提交，post提交是创建，put提交是编辑
         $thread = $request->isMethod('post') ? new Thread() : Thread::findOrFail($request->thread_id);
@@ -59,12 +72,14 @@ class ThreadController extends Controller
         // 保存thread
         $thread->save();
 
-        // 将thread_id，tag_id关联
-        foreach($request->tags as $tag){
-            $tagThread = new TagThread();
-            $tagThread->thread_id = $thread->id;
-            $tagThread->tag_identity = $tag;
-            $tagThread->save();
+        if($have_tags){
+            // 将thread_id，tag_id关联
+            foreach($request->tags as $tag){
+                $tagThread = new TagThread();
+                $tagThread->thread_id = $thread->id;
+                $tagThread->tag_identity = $tag;
+                $tagThread->save();
+            }
         }
 
         // 重定向路由至信息展示页，并携带thread信息
@@ -75,9 +90,11 @@ class ThreadController extends Controller
     {
         // 获取此id
         $thread = Thread::findOrFail($thread->id);
-        $tags = $thread->tags()->select(['tags.identity', 'tags.name', 'tags.color'])->get();
+        $tags = $thread->tags()->select(['tags.tag_group_id', 'tags.identity', 'tags.name', 'tags.color'])->get();
         // 渲染信息页面并携带id
-        return view('thread_show')->with('thread', $thread)->with('tags', $tags);
+        return view('thread_show')->with('thread', $thread)
+                                ->with('tags', $tags)
+                                ->with('forum_id', $thread->forum->id);
     }
 
     public function edit(Thread $thread)

@@ -9,7 +9,7 @@
 <div class="row">
     @include('inc.card-center')
     <section class="col-lg-10 d-lg-block right">
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-header">
             <ul class="nav nav-pills nav-fill">
                 <li class="nav-item">
@@ -25,7 +25,7 @@
                     <div class="thread-title-tags">
                         <h5 class="break-all"><a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a></h5>
                         @foreach($thread->tags as $tag)
-                        <span class="tag" @php echo "style='background-color:$tag->color'" @endphp><a href="">{{ $tag->name }}</a></span>
+                        <span class="tag" @php echo "style='background-color:$tag->color'" @endphp><a href="{{ route('tag.show', [$tag->id]) }}">{{ $tag->name }}</a></span>
                         @endforeach
                     </div>
                     <div class="d-flex small">
@@ -39,6 +39,7 @@
             @endforeach
             </div>
         </div>
+        {{ $threads->links() }}
     </section>
 </div>
 @endsection

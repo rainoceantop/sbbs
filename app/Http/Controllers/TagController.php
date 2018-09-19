@@ -8,6 +8,8 @@ use App\TagGroup;
 
 class TagController extends Controller
 {
+
+    // 更新标签组名称及标签
     public function store(Request $request)
     {
         // 更新标签组名称
@@ -16,7 +18,6 @@ class TagController extends Controller
         $group_name = $request->tagGroupName;
         $tagGroup->name = $group_name;
         $tagGroup->save();
-
 
         // 处理标签
         $tags = explode(';', trim($request->tagNames));
@@ -40,6 +41,14 @@ class TagController extends Controller
         return redirect()->back();
     }
 
+    // 获取标签帖子
+    public function show(Tag $tag)
+    {
+        $threads = Tag::findOrFail($tag->identity)->threads()->with(['tags'])->orderBy('created_at', 'desc')->paginate(10);
+        $forum_id = $tag->group->forum_id;
+        return view('index')->with('threads', $threads)
+                            ->with('forum_id', $forum_id);
+    }
 
     public function destroy($id){
         Tag::destroy($id);

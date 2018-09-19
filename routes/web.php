@@ -23,6 +23,7 @@ Route::get('user/{user}/center', 'UserController@center')->name('user.center');
 Route::get('user/{user}/threads', 'UserController@threads')->name('user.threads');
 
 // 板块路由
+Route::get('forum/{forum}', 'ForumController@show')->name('forum.show');
 Route::get('forum', 'ForumController@index')->name('forum.index');
 Route::post('forum', 'ForumController@store')->name('forum.store');
 
@@ -31,4 +32,5 @@ Route::post('tagGroup', 'TagGroupController@store')->name('tagGroup.store');
 Route::delete('tagGroup/{id}', 'TagGroupController@destroy')->name('tagGroup.destroy');
 
 // 标签路由
+Route::get('tag/{tag}', 'TagController@show')->name('tag.show');
 Route::post('tag', 'TagController@store')->name('tag.store');

@@ -12,6 +12,9 @@
     <title>软信通 - @yield('title')</title>
 </head>
 <body>
+@php
+$have_forum_id = isset($forum_id);
+@endphp
     <div id="app">
         <!-- 导航栏  -->
         <header class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -23,12 +26,12 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item @if($have_forum_id ? $forum_id == 0 : FALSE) active @endif">
                             <a class="nav-link" href="/"> 首页 <span class="sr-only">(current)</span></a>
                         </li>
                         @foreach(App\Forum::all() as $forum)
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">{{ $forum->name }}</a>
+                        <li class="nav-item @if($have_forum_id ? $forum_id == $forum->id : FALSE) active @endif">
+                            <a class="nav-link" href="{{ route('forum.show', [$forum->id]) }}">{{ $forum->name }}</a>
                         </li>
                         @endforeach
                     </ul>
@@ -77,7 +80,7 @@
                         @yield('main')
                     </section>
                     <section class="col-lg-3 d-lg-block right">
-                        <a role="button" class="btn btn-primary btn-block mb-3" href="{{ url('thread/create') }}">发新帖</a>
+                        <a role="button" class="btn btn-primary btn-block mb-3" @if($have_forum_id) href="{{ url('thread/create?fid='.$forum_id) }}" @endif>发新帖</a>
                         @yield('aside')
                     </section>
                 </div>

@@ -23,7 +23,7 @@ class UserController extends Controller
 
     public function threads(User $user)
     {
-        $threads = User::findOrFail($user->id)->threads;
+        $threads = User::findOrFail($user->id)->threads()->orderBy('created_at', 'desc')->paginate(10);
         return view('my_threads')->with('threads', $threads);
     }
 
