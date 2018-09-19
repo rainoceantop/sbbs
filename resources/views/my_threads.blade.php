@@ -25,7 +25,7 @@
                     <div class="thread-title-tags">
                         <h5 class="break-all"><a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a></h5>
                         @foreach($thread->tags as $tag)
-                        <span class="tag" @php echo "style='background-color:$tag->color'" @endphp><a href="{{ route('tag.show', [$tag->id]) }}">{{ $tag->name }}</a></span>
+                        <span class="tag" @php echo "style='background-color:$tag->color'" @endphp><a href="{{ route('forum.show', [$thread->forum_id]) }}?tagids={{ $tag->identity }}">{{ $tag->name }}</a></span>
                         @endforeach
                     </div>
                     <div class="d-flex small">
