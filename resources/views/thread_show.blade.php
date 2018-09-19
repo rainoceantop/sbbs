@@ -15,7 +15,7 @@
   </ol>
 </nav>
 <!-- thread内容 -->
-<div class="card card-thread">
+<div class="card card-thread mb-3">
     <div class="card-body">
         <section class="thread-title">
             <img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3">
@@ -39,6 +39,44 @@
         <section class="thread-body">
             <p>{!! $thread->body !!}</p>
         </section>
+    </div>
+</div>
+<!-- 评论回复内容 -->
+<div class="card card-replies">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <strong>评论回复（{{ count($thread->replies) }}）</strong>
+        </div>
+        <hr>
+        <ul class="list-unstyled thread-replies-list">
+            <li class="media">
+                <a href="" class="mr-3"><img class="user-img-4" src="{{ asset('imgs/user.jpeg') }}"></a>
+                <div class="media-body">
+                    <div class="d-flex justify-content-between small text-muted">
+                        <div>
+                            <span class="font-weight-bold">
+                                dffds
+                            </span>
+                            <span class="text-grey ml-2">
+                                六天前
+                            </span>
+                        </div>
+                        <div class="text-right text-grey">
+                            <a href=""><i class="fas fa-reply"></i></a>
+                        </div>
+                    </div>
+                    <div class="message mt-1 break-all">
+                        <div class="media mb-2">
+                            <a href="" class="mr-3"><img class="user-img-5" src="{{ asset('imgs/user.jpeg') }}"></a>
+                            <div class="media-body">
+                                fsdfdsf
+                            </div>
+                        </div>
+                        jhgfjgfj
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
 </div>
 @endsection

@@ -24,4 +24,9 @@ class Thread extends Model
     {
         return $this->belongsToMany('App\Tag', 'tag_thread', 'thread_id', 'tag_identity');
     }
+
+    public function replies()
+    {
+        return $this->hasMany('App\Reply');
+    }
 }
