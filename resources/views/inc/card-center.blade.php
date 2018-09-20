@@ -7,8 +7,9 @@
         </div>
         <div class="list-group list-group-flush text-center">
             <a href="{{ route('user.center', Auth::user()->id) }}" class="list-group-item list-group-item-action active" data-active="menu-my">个人资料</a>
-            <a href="{{ route('user.threads', Auth::user()->id) }}" class="list-group-item list-group-item-action" data-active="menu-my-thread">论坛帖子</a>
-            <a href="{{ route('forum.index') }}" class="list-group-item list-group-item-action" data-active="menu-my-thread">板块管理</a>
+            <a href="{{ route('user.threads', Auth::user()->id) }}" class="list-group-item list-group-item-action">论坛帖子</a>
+            <a href="{{ route('forum.index') }}" class="list-group-item list-group-item-action">板块管理</a>
+            <a href="{{ route('userGroup.index') }}" class="list-group-item list-group-item-action">用户组管理</a>
         </div>
     </div>
 </section>

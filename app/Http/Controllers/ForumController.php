@@ -65,4 +65,10 @@ class ForumController extends Controller
                             ->with('forum', $forum)
                             ->with('tag_ids', $tag_ids);
     }
+
+    public function destroy(Request $request)
+    {
+        Forum::destroy($request->forums);
+        return redirect()->back();
+    }
 }

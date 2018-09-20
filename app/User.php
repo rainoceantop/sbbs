@@ -24,4 +24,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Thread');
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany('App\UserGroup', 'group_user', 'user_id', 'user_group_id');
+    }
 }

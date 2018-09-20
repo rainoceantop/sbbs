@@ -20,7 +20,7 @@ class CreateTagThreadTable extends Migration
             $table->timestamps();
 
             $table->foreign('thread_id')->references('id')->on('threads')->onDelete('cascade');
-            $table->foreign('tag_identity')->references('identity')->on('tags');
+            $table->foreign('tag_identity')->references('identity')->on('tags')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

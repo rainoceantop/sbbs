@@ -10554,6 +10554,34 @@ main .accordion .card-header {
           box-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
 }
 
+main .thread-replies-item {
+  margin-bottom: 1rem;
+  padding: .5rem;
+}
+
+main .thread-replies-item:hover {
+  background-color: #f7f7f7;
+}
+
+main .thread-replies-item .message {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+main .thread-replies-item .message blockquote {
+  padding: .5rem .8rem;
+  background-color: #e9ecef;
+}
+
+main .thread-replies-item .reply-button:hover {
+  color: #3490dc;
+  cursor: pointer;
+}
+
+main .new-reply {
+  padding: .5rem;
+}
+
 main .user-img-1 {
   width: 6rem;
   height: 6rem;

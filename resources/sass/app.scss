@@ -84,6 +84,35 @@ main{
     }
   }
 
+  // 帖子评论样式
+  .thread-replies-item{
+    margin-bottom: 1rem;
+    padding: .5rem;
+    &:hover{
+      background-color: darken($color: white, $amount: 3);
+    }
+    // 回复评论样式
+    .message{
+      font-size: 18px;
+      line-height: 1.7;
+      blockquote{
+        padding: .5rem .8rem;
+        background-color: #e9ecef;
+      }
+    }
+    .reply-button{
+      &:hover{
+        color: $blue;
+        cursor: pointer;
+      }
+    }
+  }
+
+  // 评论框样式
+  .new-reply{
+    padding: .5rem;
+  }
+
   // 用户头像大小
   .user-img-1{
     width: 6rem;

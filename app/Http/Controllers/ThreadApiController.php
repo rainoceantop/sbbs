@@ -6,22 +6,14 @@ use App\Thread;
 use Illuminate\Http\Request;
 use App\Http\Resources\Thread as ThreadResource;
 
+// API范本
 class ThreadApiController extends Controller
 {
     public function index()
     {
         $threads = Thread::paginate(3);
+        // 返回所有thread
         return ThreadResource::collection($threads);
-    }
-
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
     }
 
     public function show($id)
@@ -32,18 +24,4 @@ class ThreadApiController extends Controller
         return new ThreadResource($thread);
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
-    }
 }

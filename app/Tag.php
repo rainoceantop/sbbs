@@ -17,4 +17,6 @@ class Tag extends Model
     {
         return $this->belongsToMany('App\Thread', 'tag_thread', 'tag_identity', 'thread_id');
     }
+
+    
 }

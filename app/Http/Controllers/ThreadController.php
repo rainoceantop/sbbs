@@ -90,17 +90,28 @@ class ThreadController extends Controller
     {
         // 获取此id
         $thread = Thread::findOrFail($thread->id);
+        $replies = $thread->replies;
         $tags = $thread->tags()->select(['tags.tag_group_id', 'tags.identity', 'tags.name', 'tags.color'])->get();
         // 渲染信息页面并携带id
         return view('thread_show')->with('thread', $thread)
+                                ->with('replies', $replies)
                                 ->with('tags', $tags)
                                 ->with('forum_id', $thread->forum->id);
     }
 
     public function edit(Thread $thread)
     {
-        $thread = Thread::findOrFail($thread->id);
-        return view('thread_create')->with('thread', $thread);
+        $forum_id = $thread->id;
+        $forums = Forum::select(['id', 'name'])->get();
+        $tagGroups = TagGroup::select(['id', 'forum_id', 'name'])->get();
+        foreach($tagGroups as $tagGroup){
+            $tagGroup['tags'] = TagGroup::find($tagGroup['id'])->tags()->select(['identity', 'tag_group_id', 'name'])->get()->toArray();
+        }
+        return view('thread_create')
+            ->with('thread', $thread)
+            ->with('forums', $forums)
+            ->with('tagGroups', json_encode($tagGroups, JSON_UNESCAPED_UNICODE))
+            ->with('forum_id', $forum_id);
     }
 
     public function destroy(Thread $thread)
