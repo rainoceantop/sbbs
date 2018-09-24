@@ -10,6 +10,7 @@
             <a href="{{ route('user.threads', Auth::user()->id) }}" class="list-group-item list-group-item-action">论坛帖子</a>
             <a href="{{ route('forum.index') }}" class="list-group-item list-group-item-action">板块管理</a>
             <a href="{{ route('userGroup.index') }}" class="list-group-item list-group-item-action">用户组管理</a>
+            <a href="{{ route('tag.index') }}" class="list-group-item list-group-item-action">标签管理</a>
         </div>
     </div>
 </section>

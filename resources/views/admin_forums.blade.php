@@ -114,6 +114,7 @@
                                                             <div class="modal-body">
                                                                 <form class="edit-tag-group-form" action="{{ route('tag.store') }}" method="POST">
                                                                     @csrf
+                                                                    <input type="hidden" name="forum_id" value="{{ $forum->id }}">
                                                                     <input type="hidden" name="group_id" value="{{ $tagGroup->id }}">
                                                                     <div class="form-group">
                                                                         <input type="text" name="tagGroupName" class="form-control" placeholder="标签组名称" value="{{ $tagGroup->name }}" required>
@@ -122,9 +123,9 @@
                                                                         <textarea name="tagNames" rows="8" class="form-control" placeholder="标签编辑域" required>@foreach($tagGroup->tags as $tag){{  $tag->identity }} , {{ $tag->name }} , {{ $tag->color }}@php echo " ;\n"; @endphp@endforeach</textarea>
                                                                         <small class="text-muted">每一行都是一个标签，左边是标签名，右边是标签颜色，用英文逗号隔开，末尾加英文分号。如：
                                                                             <br>
-                                                                            1, 功能增强 , #ffffff ;
+                                                                            1, 功能增强 , blue ;
                                                                             <br>
-                                                                            2, 风格模板 , #23sa21 ;
+                                                                            2, 风格模板 , orange ;
                                                                         </small>
                                                                     </div>
                                                                     <hr>

@@ -17,4 +17,9 @@ class Forum extends Model
     {
         return $this->hasMany('App\TagGroup');
     }
+
+    public function tags()
+    {
+        return $this->hasMany('App\Tag');
+    }
 }

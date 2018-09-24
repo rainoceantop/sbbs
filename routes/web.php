@@ -39,7 +39,7 @@ Route::post('tagGroup', 'TagGroupController@store')->name('tagGroup.store');
 Route::delete('tagGroup/{id}', 'TagGroupController@destroy')->name('tagGroup.destroy');
 
 // 标签路由
-Route::get('tag/{tag}', 'TagController@show')->name('tag.show');
+Route::get('tag', 'TagController@index')->name('tag.index');
 Route::post('tag', 'TagController@store')->name('tag.store');
 
 // 评论路由

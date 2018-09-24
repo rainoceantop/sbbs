@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     protected $fillable = ['tag_group_id', 'identity', 'name', 'color'];
+    protected $primaryKey='identity';
+
+    public function forum()
+    {
+        return $this->belongsTo('App\Forum');
+    }
 
     public function group()
     {

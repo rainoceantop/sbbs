@@ -15,12 +15,14 @@ class CreateTagsTable extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('forum_id');
             $table->unsignedInteger('tag_group_id');
             $table->unsignedInteger('identity')->unique();
             $table->string('name');
             $table->string('color');
             $table->timestamps();
 
+            $table->foreign('forum_id')->references('id')->on('forums')->onDelete('cascade');
             $table->foreign('tag_group_id')->references('id')->on('tag_groups')->onDelete('cascade');
         });
     }

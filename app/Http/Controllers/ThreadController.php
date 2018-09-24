@@ -22,6 +22,10 @@ class ThreadController extends Controller
 
         return view('index')->with('threads', $threads)
                             ->with('forum_id', 0);
+        // $tags1 = Thread::find(1)->tags()->get();
+        // $tags2 = Thread::find(3)->tags()->get();
+        // dd($tags1);
+        // dd($tags2);
     }
 
     public function create(Request $request)
