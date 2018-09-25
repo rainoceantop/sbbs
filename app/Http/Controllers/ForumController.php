@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Forum;
 use App\Tag;
 use App\TagGroup;
+use Auth;
 
 class ForumController extends Controller
 {
@@ -13,7 +14,7 @@ class ForumController extends Controller
     public function index()
     {
         $forums = Forum::with(['tagGroups'])->get();
-        return view('admin_forums')->with('forums', $forums);
+        return view('admin_forums')->with('forums', $forums)->with('user', Auth::user());
     }
 
     // 存储板块

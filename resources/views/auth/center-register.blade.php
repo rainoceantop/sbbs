@@ -2,27 +2,25 @@
 
 @section('content')
 <div class="row justify-content-center">
-    @if(!$admin_register)
-        @include('inc.card-center')
-    @endif
+    @include('inc.card-center')
     <div class="col-lg-10 d-lg-block right">
         <div class="card">
             <div class="card-header">
                 <ul class="nav nav-pills nav-fill">
                     <li class="nav-item">
-                        <span class="nav-link active">@if($admin_register) {{ __('超级管理员注册') }} @else {{ __('用户注册') }} @endif</span>
+                        <span class="nav-link active">{{ __('用户注册') }}</span>
                     </li>
                 </ul>
             </div>
 
             <div class="card-body">
-                <form method="POST" action="/register">
+                @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
+                <form method="POST" action="{{ route('user.create') }}">
                     @csrf
-                    @if($admin_register)
-                        <input type="hidden" name="is_super_admin" value="1">
-                    @else
-                        <input type="hidden" name="is_super_admin" value="0">
-                    @endif
                     <div class="form-group">
                         <label for="name" class="col-form-label text-md-right">{{ __('名称') }}</label>
                         <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>

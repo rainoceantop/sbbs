@@ -83,7 +83,9 @@
                 </div>
             </li>
             @endforeach
+
             @auth
+            @can('thread-reply', $thread)
             <hr>
             <li class="media new-reply">
                 <a href="" class="mr-3"><img class="user-img-4" src="{{ asset('imgs/user.jpeg') }}"></a>
@@ -114,6 +116,7 @@
                     </div>
                 </div>
             </li>
+            @endcan
             @endauth
         </ul>
     </div>

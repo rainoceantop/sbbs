@@ -14,7 +14,7 @@
             <div class="card-header">
                 <ul class="nav nav-pills nav-fill">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">标签管理</a>
+                        <span class="nav-link active">标签管理</span>
                     </li>
                 </ul>
             </div>

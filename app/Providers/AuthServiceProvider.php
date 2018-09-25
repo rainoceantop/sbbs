@@ -12,6 +12,7 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array
      */
+
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
     ];
@@ -25,6 +26,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('thread-view', 'App\Policies\ThreadPolicy@view');
+        Gate::define('thread-reply', 'App\Policies\ThreadPolicy@reply');
+        Gate::define('thread-create', 'App\Policies\ThreadPolicy@create');
+
+        Gate::define('user-register', 'App\Policies\UserPolicy@register');
+        Gate::define('user-view', 'App\Policies\UserPolicy@view');
+        Gate::define('user-update', 'App\Policies\UserPolicy@update');
     }
 }

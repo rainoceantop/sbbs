@@ -40,9 +40,6 @@ $have_forum_id = isset($forum_id);
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('登录') }}</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('注册') }}</a>
-                        </li>
                     
                         @else
                         <li class="nav-item dropdown">

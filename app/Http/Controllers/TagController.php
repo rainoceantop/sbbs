@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Tag;
 use App\TagGroup;
+use Auth;
 
 class TagController extends Controller
 {
@@ -12,7 +13,7 @@ class TagController extends Controller
     public function index()
     {
         $tags = Tag::orderBy('identity', 'asc')->get();
-        return view('admin_tags')->with('tags', $tags);
+        return view('admin_tags')->with('tags', $tags)->with('user', Auth::user());
     }
 
     // 更新标签组名称及标签

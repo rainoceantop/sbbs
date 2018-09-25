@@ -89,7 +89,7 @@
                                 <div class="card-body">
 
                                     <div class="group-insde-item">
-                                        <!-- 一行开始 -->
+                                        <!-- 用户展示行开始 -->
                                         <div class="d-flex justify-content-between">
                                             <!-- 一行左边 -->
                                             <div>
@@ -136,7 +136,55 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <!-- 一行结束 -->
 
+                                        <!-- 用户组权限行开始 -->
+                                        <div class="d-flex justify-content-between">
+                                            <!-- 一行左边 -->
+                                            <div>
+                                                权限：
+                                                @foreach($userGroup->permissions as $permission)
+                                                <a href="/">{{ $permission->name }}</a>
+                                                @endforeach
+                                            </div>
+                                            <!-- 一行右边 -->
+                                            <a href="/" class="ml-3" style="width:15%" data-toggle="modal" data-target="#add-group-permission-form-modal-{{ $userGroup->id }}">+ 添加/移除权限</a>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="add-group-permission-form-modal-{{ $userGroup->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">{{ $userGroup->name }}：添加/移除权限</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="add-group-user-form" action="{{ route('userGroup.addPermission') }}" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="user_group_id" value="{{ $userGroup->id }}">
+                                                                <div class="text-danger"><strong>删除：</strong>
+                                                                @foreach($userGroup->permissions as $permission)
+                                                                    <!-- 已加入用户 -->
+                                                                    <input type="checkbox" name="del_permissions[]" value="{{ $permission->id }}"> {{ $permission->name }} &emsp;
+                                                                @endforeach
+                                                                </div>
+                                                                <hr>
+                                                                <div class="text-success"><strong>添加：</strong>
+                                                                @foreach($userGroup->notJoinYetPermissionsId as $permission_id)
+                                                                    <!-- 获取未加入权限 -->
+                                                                    @php $permission = App\Permission::find($permission_id) @endphp
+                                                                    <input type="checkbox" name="add_permissions[]" value="{{ $permission->id }}"> {{ $permission->name }} &emsp;
+                                                                @endforeach
+                                                                </div>
+                                                                <hr>
+                                                                <button type="submit" class="btn btn-block btn-primary">执行</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- 一行结束 -->
                                     </div>

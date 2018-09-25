@@ -6,7 +6,9 @@ use App\Thread;
 use App\Forum;
 use App\TagGroup;
 use App\TagThread;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\Thread as ThreadResource;
 
 class ThreadController extends Controller
@@ -14,6 +16,10 @@ class ThreadController extends Controller
 
     public function index()
     {
+        // 如果网站没有用户，转去注册页面注册一个超级管理员
+        if(User::all()->count() == 0)
+            return view('auth.register')->with('admin_register', TRUE);
+
         // 获取首页帖子
         $threads = Thread::orderBy('created_at', 'desc')->paginate(10);
         foreach($threads as $thread){
@@ -22,28 +28,30 @@ class ThreadController extends Controller
 
         return view('index')->with('threads', $threads)
                             ->with('forum_id', 0);
-        // $tags1 = Thread::find(1)->tags()->get();
-        // $tags2 = Thread::find(3)->tags()->get();
-        // dd($tags1);
-        // dd($tags2);
     }
 
     public function create(Request $request)
     {
-        $forum_id = $request->fid;
-        $forums = Forum::select(['id', 'name'])->get();
-        $tagGroups = TagGroup::select(['id', 'forum_id', 'name'])->get();
-        foreach($tagGroups as $tagGroup){
-            $tagGroup['tags'] = TagGroup::find($tagGroup['id'])->tags()->select(['identity', 'tag_group_id', 'name'])->get()->toArray();
+        if(Gate::allows('thread-create')){
+            $forum_id = $request->fid;
+            $forums = Forum::select(['id', 'name'])->get();
+            $tagGroups = TagGroup::select(['id', 'forum_id', 'name'])->get();
+            foreach($tagGroups as $tagGroup){
+                $tagGroup['tags'] = TagGroup::find($tagGroup['id'])->tags()->select(['identity', 'tag_group_id', 'name'])->get()->toArray();
+            }
+            return view('thread_create')
+                ->with('forums', $forums)
+                ->with('tagGroups', json_encode($tagGroups, JSON_UNESCAPED_UNICODE))
+                ->with('forum_id', $forum_id);
         }
-        return view('thread_create')
-            ->with('forums', $forums)
-            ->with('tagGroups', json_encode($tagGroups, JSON_UNESCAPED_UNICODE))
-            ->with('forum_id', $forum_id);
+        return "<script>alert('无权访问');history.go(-1);</script>";
     }
 
     public function store(Request $request)
     {   
+        if(Gate::denies('thread-create'))
+            return "<script>alert('无权新建');history.go(-1);</script>";
+
         $requiement = [
             'select-forum' => 'required',
             'user_id' => 'required',
@@ -51,7 +59,7 @@ class ThreadController extends Controller
             'body_md' => 'required',
         ];
         $message = [
-            'select-form.required' => '请选择板块',
+            'select-forum.required' => '请选择板块',
             'user_id.required' => '请先登录',
             'title.required' => '标题不能为空',
             'body_md.required' => '内容不能为空',
@@ -77,12 +85,12 @@ class ThreadController extends Controller
         $thread->save();
 
         if($have_tags){
+            // 删除原先的关联
+            $thread->tags()->detach();
+
             // 将thread_id，tag_id关联
             foreach($request->tags as $tag){
-                $tagThread = new TagThread();
-                $tagThread->thread_id = $thread->id;
-                $tagThread->tag_identity = $tag;
-                $tagThread->save();
+                $thread->tags()->attach($tag);
             }
         }
 
@@ -92,15 +100,19 @@ class ThreadController extends Controller
 
     public function show(Thread $thread)
     {
-        // 获取此id
-        $thread = Thread::findOrFail($thread->id);
-        $replies = $thread->replies;
-        $tags = $thread->tags()->select(['tags.tag_group_id', 'tags.identity', 'tags.name', 'tags.color'])->get();
-        // 渲染信息页面并携带id
-        return view('thread_show')->with('thread', $thread)
-                                ->with('replies', $replies)
-                                ->with('tags', $tags)
-                                ->with('forum_id', $thread->forum->id);
+        // 判断是否有权限访问
+        if(Gate::allows('thread-view', $thread)){
+            // 获取此id
+            $thread = Thread::findOrFail($thread->id);
+            $replies = $thread->replies;
+            $tags = $thread->tags()->select(['tags.tag_group_id', 'tags.identity', 'tags.name', 'tags.color'])->get();
+            // 渲染信息页面并携带id
+            return view('thread_show')->with('thread', $thread)
+                                    ->with('replies', $replies)
+                                    ->with('tags', $tags)
+                                    ->with('forum_id', $thread->forum->id);
+        }
+        return "<script>alert('无权访问');history.go(-1);</script>";
     }
 
     public function edit(Thread $thread)
