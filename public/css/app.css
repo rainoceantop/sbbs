@@ -10476,6 +10476,7 @@ body {
 }
 
 main {
+  min-height: calc(100vh - 8.6rem);
   padding-top: 1rem;
 }
 

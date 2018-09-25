@@ -47785,11 +47785,11 @@ var render = function() {
   return _c("div", { staticClass: "card" }, [
     _c("div", { staticClass: "m-3" }, [
       _c("h5", { staticClass: "text-center" }, [
-        _vm._v("\n            深圳市软信通网络科技有限公司\n        ")
+        _vm._v("\r\n            深圳市软信通网络科技有限公司\r\n        ")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "small line-height-3" }, [
-        _vm._v("\n            " + _vm._s(_vm.info) + "\n        ")
+        _vm._v("\r\n            " + _vm._s(_vm.info) + "\r\n        ")
       ])
     ]),
     _vm._v(" "),
@@ -47902,7 +47902,7 @@ var content = __webpack_require__(49);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(13)("39a3ecc4", content, false, {});
+var update = __webpack_require__(13)("528949b7", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -47926,7 +47926,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n.forum-logo[data-v-00ebd596],\nimg[data-v-00ebd596] {\n  width: 100%;\n}\n", ""]);
+exports.push([module.i, "\n.forum-logo[data-v-00ebd596],\r\nimg[data-v-00ebd596] {\r\n  width: 100%;\n}\r\n", ""]);
 
 // exports
 
@@ -48032,7 +48032,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "small line-height-3" }, [
-        _vm._v("\n            " + _vm._s(_vm.info) + "\n        ")
+        _vm._v("\r\n            " + _vm._s(_vm.info) + "\r\n        ")
       ])
     ]),
     _vm._v(" "),
@@ -48131,7 +48131,7 @@ var content = __webpack_require__(55);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(13)("6c894530", content, false, {});
+var update = __webpack_require__(13)("7ddafddd", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -48155,7 +48155,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\nimg[data-v-25f1f2e6] {\n  width: 100px;\n  height: 100px;\n  border-radius: 50px;\n  border: 1px lightgray solid;\n  padding: 2px;\n  margin-bottom: 1rem;\n}\n", ""]);
+exports.push([module.i, "\nimg[data-v-25f1f2e6] {\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 50px;\r\n  border: 1px lightgray solid;\r\n  padding: 2px;\r\n  margin-bottom: 1rem;\n}\r\n", ""]);
 
 // exports
 
