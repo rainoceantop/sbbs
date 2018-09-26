@@ -11,8 +11,8 @@
             @if($user->id == Auth::user()->id)
                 @if(Auth::user()->is_super_admin)
                 <a href="{{ route('forum.index') }}" class="list-group-item list-group-item-action">板块管理</a>
-                <a href="{{ route('userGroup.index') }}" class="list-group-item list-group-item-action">用户组管理</a>
                 <a href="{{ route('tag.index') }}" class="list-group-item list-group-item-action">标签管理</a>
+                <a href="{{ route('userGroup.index') }}" class="list-group-item list-group-item-action">用户组管理</a>
                 @endif
                 @can('user-view', $user)
                 <a href="{{ route('user.index') }}" class="list-group-item list-group-item-action">用户管理</a>

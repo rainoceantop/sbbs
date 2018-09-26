@@ -21,6 +21,8 @@ class CreateThreadsTable extends Migration
             $table->text('body');
             $table->text('body_md');
             $table->tinyInteger('is_filed')->default(0);
+            $table->tinyInteger('is_good')->default(0);
+            $table->tinyInteger('is_top')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

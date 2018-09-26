@@ -1,8 +1,8 @@
 <div class="card">
     <div class="m-3">
         <div class="forum-logo">
-            <img src="imgs/forum.jpg" />
-            <h5 class="text-center">公告</h5>
+            <img class="w-100 img-responsive" src="{{ asset('imgs/forum.jpg') }}" />
+            <h5 class="text-center">{{ $forum->name }}</h5>
         </div>
         <div class="small line-height-3">
         在本组发布测试结果，每个bug一个帖子，标题格式： 项目代号-测试人-简单描述
@@ -23,5 +23,20 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h6 class="card-title">
+            版主：
+        </h6>
+        <div class="row">
+            @foreach($forum->administrators as $user)
+            <div class="col-4 text-center">
+                <a href="{{ route('user.center', [$user->id]) }}" title="{{ $user->name }}"><img class="w-100 img-responsive rounded" src="{{ $user->avatar }}"></a>
+            </div>
+            @endforeach
+        </div>
     </div>
 </div>

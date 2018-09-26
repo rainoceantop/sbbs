@@ -36,29 +36,47 @@
     <div class="card-header">
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link active" href="#">最新</a>
+                <a class="nav-link active" href="{{ empty($forum) ? '/' : route('forum.show', [$forum->id]) }}">最新</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">精华</a>
+                <a class="nav-link" href="{{ empty($forum) ? '' : route('forum.show', [$forum->id]) }}?type=good">精华</a>
             </li>
+            @if(!empty($forum))
+            <li class="nav-item">
+            <a class="nav-link" href="{{ route('forum.show', [$forum->id]) }}?type=filed">归档</a>
+            </li>
+            @endif
         </ul>
     </div>
     <div class="card-body card-thread-list">
         @foreach($threads as $thread)
         <section class="thread-item thread-title">
             <a href="{{ route('user.center', $thread->user_id) }}"><img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3"></a>
-            <div class="thread-intro">
+            <div class="thread-intro w-100">
                 <div class="thread-title-tags">
-                    <h5 class="break-all"><a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a></h5>
+                    <h5 class="break-all">@if($thread->is_top) <i class="fas fa-angle-up"></i> @endif<a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a>
                     @foreach($thread->tags as $tag)
                     <span class="tag" @php echo "style='background-color:$tag->color'" @endphp><a href="{{ route('forum.show', [$thread->forum_id]) }}?tagids={{ $tag->identity }}">{{ $tag->name }}</a></span>
                     @endforeach
+                    </h5>
                 </div>
-                <div class="d-flex small">
-                    <span class="username">
-                        <a href="{{ route('user.center', $thread->user_id) }}" class="text-muted font-weight-bold">{{ $thread->user->name }}</a>
-                    </span>
-                    <span class="date text-grey ml-2">{{ $thread->created_at->diffForHumans() }}</span>
+                <div class="d-flex small justify-content-between text-muted">
+                    <!-- 左 -->
+                    <div>
+                        <span class="username">
+                            <a href="{{ route('user.center', $thread->user_id) }}" class="text-muted">{{ $thread->user->name }}</a>
+                        </span>
+                        <span class="date ml-2">{{ $thread->created_at->diffForHumans() }}</span>
+                        @if( $thread->replies()->count() > 0 )
+                        &nbsp;<i class="fas fa-arrow-left ml-2"></i>&nbsp;
+                        <span class="ml-2">{{ $thread->replies()->orderBy('created_at', 'desc')->first()->user->name }}</span>
+                        <span class="ml-2">{{ $thread->replies()->orderBy('created_at', 'desc')->first()->created_at->diffForHumans() }}</span>
+                        @endif
+                    </div>
+                    <!-- 右 -->
+                    <div>
+                    <i class="far fa-comment"></i>&nbsp;{{ $thread->replies()->count() }}
+                    </div>
                 </div>
             </div>
         </section>

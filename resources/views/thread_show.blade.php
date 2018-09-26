@@ -18,20 +18,20 @@
 <div class="card card-thread mb-3">
     <div class="card-body">
         <section class="thread-title">
-            <img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3">
+            <a href="{{ route('user.center', [$thread->user_id]) }}"><img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3"></a>
             <div class="thread-intro">
                 <div class="thread-title-tags">
-                    <h4 class="break-all">{{ $thread->title }}</h4>
+                    <h4 class="break-all">{{ $thread->title }}
                     @foreach($tags as $tag)
-                    <span class="tag" @php echo "style='background-color:$tag->color'"; @endphp><a href="{{ route('forum.show', [$tag->group->forum_id]) }}?tagids={{ $tag->identity }}">{{ $tag->name }}</a></span>
+                    <span class="tag" @php echo "style='background-color:$tag->color; font-size:1rem; font-weight:bold;'"; @endphp><a href="{{ route('forum.show', [$tag->group->forum_id]) }}?tagids={{ $tag->identity }}">{{ $tag->name }}</a></span>
                     @endforeach
+                    </h4>
                 </div>
-                <div class="d-flex small">
+                <div class="d-flex small justify-content-start text-muted">
                     <span class="username">
-                        <a href="user-33.htm" class="text-muted font-weight-bold"><i class="fas fa-pencil-alt"></i> 卡西莫多</a>
+                        <a href="{{ route('user.center', [$thread->user_id]) }}" class="text-muted font-weight-bold"><i class="fas fa-pencil-alt"></i> {{ $thread->user->name }}</a>
                     </span>
                     <span class="date text-grey ml-2"><i class="fas fa-clock"></i> {{ $thread->created_at->diffForHumans() }}</span>
-                    <span class="text-grey ml-2"><i class="fas fa-eye"></i> 30</span>
                 </div>
             </div>
         </section>
@@ -39,6 +39,15 @@
         <section class="thread-body">
             <p>{!! $thread->body !!}</p>
         </section>
+        @if($is_admin)
+        <section class="thread-footer">
+                <a id="filed-button" data-thread_id="{{ $thread->id }}" data-is_filed="{{ $thread->is_filed }}" href="javascript:void(0)" class="mr-3">{{ $thread->is_filed ? '取消归档' : '归档' }}</a>
+
+                <a id="good-button" data-thread_id="{{ $thread->id }}" data-is_good="{{ $thread->is_good }}" href="javascript:void(0)" class="mr-3">{{ $thread->is_good ? '取消精华' : '精华' }}</a>
+
+                <a id="top-button" data-thread_id="{{ $thread->id }}" data-is_top="{{ $thread->is_top }}" href="javascript:void(0)" class="mr-3">{{ $thread->is_top ? '取消置顶' : '置顶' }}</a>
+        </section>
+        @endif
     </div>
 </div>
 <!-- 评论回复内容 -->
@@ -49,16 +58,16 @@
         </div>
         <hr>
         <ul class="list-unstyled thread-replies-list">
-            @foreach($replies as $index => $reply)
+            @forelse($replies as $index => $reply)
             <!-- 单个评论item -->
             <li class="media thread-replies-item">
-                <a href="" class="mr-3"><img class="user-img-4" src="{{ asset('imgs/user.jpeg') }}"></a>
+                <a href="{{ route('user.center', [$reply->from_user_id]) }}" class="mr-3"><img class="user-img-4" src="{{ asset('imgs/user.jpeg') }}"></a>
                 <div class="media-body">
                     <div class="d-flex justify-content-between small text-muted">
                         <div>
-                            <span class="font-weight-bold">
+                            <a href="{{ route('user.center', [$reply->from_user_id]) }}" class="font-weight-bold text-muted">
                                 {{ App\User::find($reply->from_user_id)->name }}
-                            </span>
+                            </a>
                             <span class="text-grey ml-2">
                                 {{ $reply->created_at->diffForHumans() }}
                             </span>
@@ -82,7 +91,9 @@
                     </div>
                 </div>
             </li>
-            @endforeach
+            @empty
+                <span class="d-flex justify-content-center">暂无评论</span>
+            @endforelse
 
             @auth
             @can('thread-reply', $thread)
@@ -129,7 +140,76 @@
 
 @section('script')
 <script>
+    const filedButton = $('#filed-button')
+    const goodButton = $('#good-button')
+    const topButton = $('#top-button')
+
+    let is_filed = filedButton.data('is_filed')
+    filedButton.on('click', function(){
+        if(!is_filed){
+            $.ajax({
+                url: '/thread/' + $(this).data('thread_id') + '/setFiled',
+                success: function(){
+                    is_filed = 1
+                    filedButton.text('取消归档')
+                }
+            })
+        } else {
+            $.ajax({
+                url: '/thread/' + $(this).data('thread_id') + '/cancelFiled',
+                success: function(){
+                    is_filed = 0
+                    filedButton.text('归档')
+                }
+            })
+        }
+    })
+
+    let is_good = goodButton.data('is_good')
+    goodButton.on('click', function(){
+        if(!is_good){
+            $.ajax({
+                url: '/thread/' + $(this).data('thread_id') + '/setGood',
+                success: function(){
+                    is_good = 1
+                    goodButton.text('取消精华')
+                }
+            })
+        } else {
+            $.ajax({
+                url: '/thread/' + $(this).data('thread_id') + '/cancelGood',
+                success: function(){
+                    is_good = 0
+                    goodButton.text('精华')
+                }
+            })
+        }
+    })
+
+    let is_top = topButton.data('is_top')
+    topButton.on('click', function(){
+        if(!is_top){
+            $.ajax({
+                url: '/thread/' + $(this).data('thread_id') + '/setTop',
+                success: function(){
+                    is_top = 1
+                    topButton.text('取消置顶')
+                }
+            })
+        } else {
+            $.ajax({
+                url: '/thread/' + $(this).data('thread_id') + '/cancelTop',
+                success: function(){
+                    is_top = 0
+                    topButton.text('置顶')
+                }
+            })
+        }
+    })
+</script>
+<script>
 $(function(){
+
     const replyForm = $('#reply-form')
     const replyButtons = $('.reply-button')
 
@@ -172,6 +252,7 @@ $(function(){
             }, 100)
         }, 1000)
     })
+
 })
 </script>
 @endsection

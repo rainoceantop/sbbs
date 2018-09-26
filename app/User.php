@@ -30,6 +30,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\UserGroup', 'group_user', 'user_id', 'user_group_id');
     }
 
+    public function forums()
+    {
+        return $this->belongsToMany('App\Forum', 'forum_users', 'user_id', 'forum_id');
+    }
+
     // 判断是否超级用户
     public function isSuperAdmin()
     {

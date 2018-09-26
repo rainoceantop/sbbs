@@ -29,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('thread-view', 'App\Policies\ThreadPolicy@view');
         Gate::define('thread-reply', 'App\Policies\ThreadPolicy@reply');
         Gate::define('thread-create', 'App\Policies\ThreadPolicy@create');
+        Gate::define('thread-update', 'App\Policies\ThreadPolicy@update');
 
         Gate::define('user-register', 'App\Policies\UserPolicy@register');
         Gate::define('user-view', 'App\Policies\UserPolicy@view');

@@ -95,7 +95,7 @@
                                             <div>
                                                 用户：
                                                 @foreach($userGroup->users as $user)
-                                                <a href="/">{{ $user->name }}</a>
+                                                <a href="{{ route('user.center', [$user->id]) }}">{{ $user->name }}</a>
                                                 @endforeach
                                             </div>
                                             <!-- 一行右边 -->

@@ -24,6 +24,12 @@ Route::group(['middleware'=>'auth'], function(){
     // 帖子路由
     Route::resource('thread', 'ThreadController')->except(['index', 'update']);
     Route::put('thread', 'ThreadController@store')->name('thread.update');
+    Route::get('thread/{thread}/setFiled', 'ThreadController@setFiled')->name('thread.setFiled');
+    Route::get('thread/{thread}/setGood', 'ThreadController@setGood')->name('thread.setGood');
+    Route::get('thread/{thread}/setTop', 'ThreadController@setTop')->name('thread.setTop');
+    Route::get('thread/{thread}/cancelFiled', 'ThreadController@cancelFiled')->name('thread.cancelFiled');
+    Route::get('thread/{thread}/cancelGood', 'ThreadController@cancelGood')->name('thread.cancelGood');
+    Route::get('thread/{thread}/cancelTop', 'ThreadController@cancelTop')->name('thread.cancelTop');
 
     // 用户路由
     Route::get('user/{user}/center', 'UserController@center')->name('user.center');
@@ -37,6 +43,7 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('forum/{forum}', 'ForumController@show')->name('forum.show');
     Route::get('forum', 'ForumController@index')->name('forum.index');
     Route::post('forum', 'ForumController@store')->name('forum.store');
+    Route::post('forum/addAdmin', 'ForumController@addAdmin')->name('forum.addAdmin');
     Route::delete('forum', 'ForumController@destroy')->name('forum.destroy');
 
     // 用户组路由
@@ -53,6 +60,7 @@ Route::group(['middleware'=>'auth'], function(){
     // 标签路由
     Route::get('tag', 'TagController@index')->name('tag.index');
     Route::post('tag', 'TagController@store')->name('tag.store');
+    Route::delete('tag/{tag}', 'TagController@destroy')->name('tag.destroy');
 
     // 评论路由
     Route::resource('reply', 'ReplyController')->except(['index', 'show', 'create', 'edit']);

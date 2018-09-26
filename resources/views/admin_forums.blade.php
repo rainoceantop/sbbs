@@ -173,6 +173,54 @@
                                         </div>
                                         <!-- 一行结束 -->
 
+                                        <!-- 一行开始 -->
+                                        <div class="d-flex justify-content-between">
+                                            <!-- 一行左边 -->
+                                            <div>
+                                            负责人：
+                                            @foreach($forum->administrators as $user)
+                                                <a href="{{ route('user.center', [$user->id]) }}">{{ $user->name }}</a>
+                                            @endforeach
+                                            </div>
+                                            <!-- 一行右边 -->
+                                            <a href="/" class="ml-3" style="width:15%" data-toggle="modal" data-target="#add-forum-admin-form-modal-{{ $forum->id }}">+ 添加/移除负责人</a>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="add-forum-admin-form-modal-{{ $forum->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">{{ $forum->name }}：添加/移除负责人</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="add-forum-admin-form" action="{{ route('forum.addAdmin') }}" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="forum_id" value="{{ $forum->id }}">
+                                                                <div class="text-danger"><strong>删除：</strong>
+                                                                @foreach($forum->administrators as $user)
+                                                                    <!-- 已加入用户 -->
+                                                                    <input type="checkbox" name="del_users[]" value="{{ $user->id }}"> {{ $user->name }} &emsp;
+                                                                @endforeach
+                                                                </div>
+                                                                <hr>
+                                                                <div class="text-success"><strong>添加：</strong>
+                                                                @foreach($forum->notJoinYetUsersId as $user_id)
+                                                                    <!-- 获取未加入用户 -->
+                                                                    @php $user = App\User::find($user_id) @endphp
+                                                                    <input type="checkbox" name="add_users[]" value="{{ $user->id }}"> {{ $user->name }} &emsp;
+                                                                @endforeach
+                                                                </div>
+                                                                <hr>
+                                                                <button type="submit" class="btn btn-block btn-primary">执行</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>

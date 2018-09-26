@@ -7,5 +7,12 @@
 @endsection
 
 @section('aside')
-@include('inc.card-intro')
+
+@if(!empty($forum))
+    @include('inc.card-forum')
+    
+@else
+    @include('inc.card-intro')
+@endif
+
 @endsection

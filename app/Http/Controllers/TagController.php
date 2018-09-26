@@ -12,6 +12,10 @@ class TagController extends Controller
 
     public function index()
     {
+        // 如果不是超级管理员，不让行
+        if(!Auth::user()->is_super_admin)
+            return "<script>alert('无权访问');history.go(-1);</script>";
+            
         $tags = Tag::orderBy('identity', 'asc')->get();
         return view('admin_tags')->with('tags', $tags)->with('user', Auth::user());
     }

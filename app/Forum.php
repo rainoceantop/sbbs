@@ -22,4 +22,9 @@ class Forum extends Model
     {
         return $this->hasMany('App\Tag');
     }
+
+    public function administrators()
+    {
+        return $this->belongsToMany('App\User', 'forum_users', 'forum_id', 'user_id');
+    }
 }

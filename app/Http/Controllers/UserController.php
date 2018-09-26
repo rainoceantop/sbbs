@@ -18,6 +18,9 @@ class UserController extends Controller
 
     public function index()
     {
+        if(Gate::denies('user-view', Auth::user()))
+            return "<script>alert('无权访问');history.go(-1);</script>";
+
         $users = User::where('is_super_admin', 0)->get();
         return view('admin_users')->with('users', $users)->with('user', Auth::user());
     }
@@ -36,7 +39,7 @@ class UserController extends Controller
     public function threads(User $user)
     {
         $user = User::findOrFail($user->id);
-        $threads = $user->threads()->orderBy('created_at', 'desc')->paginate(10);
+        $threads = $user->threads()->orderBy('created_at', 'desc')->paginate(15);
         return view('my_threads')->with('user', $user)->with('threads', $threads);
     }
 

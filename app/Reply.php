@@ -16,6 +16,11 @@ class Reply extends Model
         'to_user_id'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'from_user_id', 'id');
+    }
+
     public function thread()
     {
         return $this->belongsTo('App\Thread');

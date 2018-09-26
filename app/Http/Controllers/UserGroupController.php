@@ -15,9 +15,13 @@ class UserGroupController extends Controller
     // 返回用户组管理视图
     public function index()
     {
+        // 如果不是超级管理员，不让行
+        if(!Auth::user()->is_super_admin)
+            return "<script>alert('无权访问');history.go(-1);</script>";
+
         $userGroups = UserGroup::with(['users', 'permissions'])->get();
         foreach($userGroups as $userGroup){
-            // 关联获取到的数据携带pivot一栏,一级更新和创建的事件栏，切割掉再对比差集
+            // 关联获取到的数据携带pivot一栏,以及更新和创建的事件栏，切割掉再对比差集
             $userGroup['notJoinYetUsersId'] = array_diff(array_column(User::all()->toArray(), 'id'), array_column($userGroup->users->toArray(), 'id'));
             $userGroup['notJoinYetPermissionsId'] = array_diff(array_column(Permission::all()->toArray(), 'id'), array_column($userGroup->Permissions->toArray(), 'id'));
         }

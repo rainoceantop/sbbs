@@ -25,25 +25,26 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return $this->can($user, 4);
-    }
-
-    /**
-     * 是否可以注册用户
-     * 权限id 1 = 查看帖子
-     * 权限id 2 = 回复帖子
-     * 权限id 3 = 创建帖子
-     * 权限id 4 = 用户查看
-     * 权限id 5 = 用户注册
-     * 权限id 6 = 用户编辑
-     */
-    public function register(User $user)
-    {
         return $this->can($user, 5);
     }
 
     /**
-     * 用户是否能够编辑
+     * 权限id 1 = 查看帖子
+     * 权限id 2 = 回复帖子
+     * 权限id 3 = 创建帖子
+     * 权限id 4 = 修改帖子
+     * 权限id 5 = 用户查看
+     * 权限id 6 = 用户注册
+     * 权限id 7 = 用户修改
+     * 权限id 8 = 板块管理
+     */
+    public function register(User $user)
+    {
+        return $this->can($user, 6);
+    }
+
+    /**
+     * 用户是否能够修改
      *
      * @param  \App\User  $user
      * @param  \App\User  $model
@@ -51,7 +52,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $this->can($user, 6);
+        return $this->can($user, 7);
     }
 
     /**

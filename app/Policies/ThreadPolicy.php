@@ -18,13 +18,14 @@ class ThreadPolicy
     }
 
     /**
-     * 是否有查看权限
      * 权限id 1 = 查看帖子
      * 权限id 2 = 回复帖子
      * 权限id 3 = 创建帖子
-     * 权限id 4 = 用户查看
-     * 权限id 5 = 用户注册
-     * 权限id 6 = 用户编辑
+     * 权限id 4 = 修改帖子
+     * 权限id 5 = 用户查看
+     * 权限id 6 = 用户注册
+     * 权限id 7 = 用户修改
+     * 权限id 8 = 板块管理
      */
     public function view(User $user, Thread $thread)
     {
@@ -53,6 +54,11 @@ class ThreadPolicy
     public function reply(User $user, Thread $thread)
     {
         return $this->can($user, 2);
+    }
+
+    public function update(User $user)
+    {
+        return $this->can($user, 4);
     }
 
     public function can(User $user, $permission_id)

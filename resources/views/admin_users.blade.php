@@ -33,7 +33,7 @@
                     @foreach($users as $user)
                         <tr>
                             <th scope="row">{{ $user->id }}</th>
-                            <td>{{ $user->name }}</td>
+                            <td><a href="{{ route('user.center', [$user->id]) }}">{{ $user->name }}</a></td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->created_at->diffForHumans() }}</td>
                             <td><a class="text-success" href="/"  data-toggle="modal" data-target="#edit-user-form-modal-{{ $user->id }}">修改</a>
