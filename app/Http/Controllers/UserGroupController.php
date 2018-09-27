@@ -20,17 +20,24 @@ class UserGroupController extends Controller
             return "<script>alert('无权访问');history.go(-1);</script>";
 
         $userGroups = UserGroup::with(['users', 'permissions'])->get();
+        $category_id = 4;
         foreach($userGroups as $userGroup){
             // 关联获取到的数据携带pivot一栏,以及更新和创建的事件栏，切割掉再对比差集
             $userGroup['notJoinYetUsersId'] = array_diff(array_column(User::all()->toArray(), 'id'), array_column($userGroup->users->toArray(), 'id'));
             $userGroup['notJoinYetPermissionsId'] = array_diff(array_column(Permission::all()->toArray(), 'id'), array_column($userGroup->Permissions->toArray(), 'id'));
         }
-        return view('admin_groups')->with('userGroups', $userGroups)->with('user', Auth::user());
+        return view('admin_groups')->with('userGroups', $userGroups)->with('user', Auth::user())->with('category_id', $category_id);
     }
 
     public function store(Request $request)
     {
         UserGroup::create($request->all());
+        return redirect()->back();
+    }
+
+    public function update(Request $request)
+    {
+        UserGroup::find($request->group_id)->update(['name' => $request->name]);
         return redirect()->back();
     }
 

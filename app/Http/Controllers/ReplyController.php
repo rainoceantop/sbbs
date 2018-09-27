@@ -11,7 +11,8 @@ class ReplyController extends Controller
 {
     public function store(Request $request)
     {
-        if(Gate::allows('thread-reply', new Thread)){
+        
+        if(Gate::allows('thread-reply', Thread::find($request->thread_id))){
             Reply::create($request->all());
             return redirect()->back();
         }

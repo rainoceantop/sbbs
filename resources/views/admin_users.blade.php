@@ -24,20 +24,33 @@
                         <tr>
                         <th scope="col">用户id</th>
                         <th scope="col">名称</th>
+                        <th scope="col">等级</th>
                         <th scope="col">帐号</th>
                         <th scope="col">创建于</th>
                         <th scope="col">操作</th>
                         </tr>
                     </thead>
                     <tbody>
+                    @foreach($admins as $admin)
+                        <tr>
+                        <th scope="row">{{ $admin->id }}</th>
+                        <td><a href="{{ route('user.center', [$admin->id]) }}">{{ $admin->name }}</a></td>
+                        <td>超级管理员</td>
+                        <td>{{ $admin->username }}</td>
+                        <td>{{ $admin->created_at->diffForHumans() }}</td>
+                        <td>无</td>
+                        </tr>
+                    @endforeach
                     @foreach($users as $user)
                         <tr>
                             <th scope="row">{{ $user->id }}</th>
                             <td><a href="{{ route('user.center', [$user->id]) }}">{{ $user->name }}</a></td>
+                            <td>{{ $user->forums()->count() > 0 ? '板块版主' : '普通用户' }}</td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->created_at->diffForHumans() }}</td>
-                            <td><a class="text-success" href="/"  data-toggle="modal" data-target="#edit-user-form-modal-{{ $user->id }}">修改</a>
-                                                    <!-- Modal -->
+                            <td><a class="text-success @cannot('user-update', Auth::user()) btn btn-sm disabled @endcan" href="/" data-toggle="modal" data-target="#edit-user-form-modal-{{ $user->id }}" title="修改用户 '{{ $user->name }}' 的信息"><i class="fas fa-user-edit"></i></a>
+                            @if(Auth::user()->is_super_admin) | <a href="javascript:void(0)" class="text-warning upgrade-user-button" data-user_name="{{ $user->name }}" data-url="{{ route('user.upgrade', $user->id) }}" title="将用户 '{{ $user->name }}' 升级为超级管理员"><i class="fas fa-key"></i></a> @endif
+                        <!-- Modal -->
                         <div class="modal fade" id="edit-user-form-modal-{{ $user->id }}" tabindex="-1" role="dialog">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -85,4 +98,22 @@
 @endsection
 
 @section('script')
+<script>
+const upgradeUserButton = $('.upgrade-user-button')
+
+upgradeUserButton.each(function(){
+    $(this).on('click', function(){
+        let current_button = $(this)
+        if(confirm(`确定要将"${current_button.data('user_name')}"升级为管理员吗？`)){
+            $.ajax({
+            url: current_button.data('url'),
+            success: function(){
+                current_button.parents('tr').hide()
+            }
+        })
+        }
+    })
+})
+
+</script>
 @endsection

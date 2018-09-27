@@ -4,8 +4,8 @@
             <img class="w-100 img-responsive" src="{{ asset('imgs/forum.jpg') }}" />
             <h5 class="text-center">{{ $forum->name }}</h5>
         </div>
-        <div class="small line-height-3">
-        在本组发布测试结果，每个bug一个帖子，标题格式： 项目代号-测试人-简单描述
+        <div class="line-height-3">
+        {{ $forum->description }}
         </div>
     </div>
     <div class="card-footer p-2">
@@ -14,11 +14,11 @@
                 <tr align="center">
                     <td>
                         <span class="text-muted">帖子总数</span><br>
-                        <b>5421</b>
+                        <b>{{ $forum_threads_count }}</b>
                     </td>
                     <td>
                         <span class="text-muted">今日帖子</span><br>
-                        <b>545</b>
+                        <b>{{ $forum_today_threads }}</b>
                     </td>
                 </tr>
             </tbody>

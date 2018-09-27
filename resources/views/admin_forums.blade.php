@@ -6,6 +6,10 @@
 @endsection
 
 @section('content')
+
+
+
+
 <div class="row">
     @include('inc.card-center')
     <section class="col-lg-10 d-lg-block right">
@@ -15,7 +19,7 @@
             <div class="card-header d-flex justify-content-between">
                 <!-- 左边新建板块 -->
                 <div>
-                    <a href="/" data-toggle="modal" data-target="#new-forum-form-modal">+ 新建板块</a>
+                    <a href="/" @if(!Auth::user()->is_super_admin) class="btn btn-sm disabled" @endif data-toggle="modal" data-target="#new-forum-form-modal">+ 新建板块</a>
                     <!-- Modal -->
                     <div class="modal fade" id="new-forum-form-modal" tabindex="-1" role="dialog">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -32,6 +36,9 @@
                                         <div class="form-group">
                                             <input type="text" name="name" class="form-control" placeholder="板块名称" required>
                                         </div>
+                                        <div class="form-group">
+                                            <textarea name="description" class="form-control" rows="5" placeholder="板块描述"></textarea>
+                                        </div>
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                                         <button type="submit" class="btn btn-primary" id="new-forum-submit-button">新建</button>
                                     </form>
@@ -43,7 +50,7 @@
 
                 <!-- 右边删除板块 -->
                 <div>
-                    <a href="/" class="text-danger" data-toggle="modal" data-target="#delete-forum-form-modal">- 删除板块</a>
+                    <a href="/" @if(!Auth::user()->is_super_admin) class="btn btn-sm text-danger disabled" @else class="text-danger" @endif data-toggle="modal" data-target="#delete-forum-form-modal">- 删除板块</a>
                     <!-- Modal -->
                     <div class="modal fade" id="delete-forum-form-modal" tabindex="-1" role="dialog">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -78,14 +85,47 @@
                 
                 <div class="accordion w-100" id="accordionForum">
                     @foreach($forums as $forum)
+                        @php
+                        $can_edit_forum = !Auth::user()->is_super_admin && !in_array(Auth::user()->id, array_column($forum->administrators()->get()->toArray(), 'id'))
+                        @endphp
                         <div class="card">
 
                             <!-- 板块标题展示区域 -->
                             <div class="card-header  text-center" id="forum{{ $forum->id }}">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ $forum->id }}" aria-controls="collapse{{ $forum->id }}">
+                                    <button class="btn btn-link @if($can_edit_forum) disabled @endif" type="button" data-toggle="collapse" data-target="#collapse{{ $forum->id }}" aria-controls="collapse{{ $forum->id }}">
                                     {{ $forum->name }}
                                     </button>
+                                    <a href="/" data-toggle="modal" data-target="#edit-forum-form-modal-{{ $forum->id }}" title="编辑" class="btn text-success  @if($can_edit_forum) disabled @endif"><i class="fas fa-pen-square"></i></a>
+                                
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="edit-forum-form-modal-{{ $forum->id }}" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">{{ $forum->name }}：编辑板块</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="edit-forum-form" action="{{ route('forum.update') }}" method="POST">
+                                                        @csrf
+                                                        @method('put')
+                                                        <input type="hidden" name="forum_id" value="{{ $forum->id }}">
+                                                        <div class="form-group">
+                                                            <input type="text" name="name" class="form-control" placeholder="板块名称" value="{{ $forum->name }}" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <textarea name="description" class="form-control" rows="5" placeholder="板块描述">{{ $forum->description }}</textarea>
+                                                        </div>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                                        <button type="submit" class="btn btn-primary" id="new-forum-submit-button">编辑</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </h5>
                             </div>
 
@@ -183,7 +223,7 @@
                                             @endforeach
                                             </div>
                                             <!-- 一行右边 -->
-                                            <a href="/" class="ml-3" style="width:15%" data-toggle="modal" data-target="#add-forum-admin-form-modal-{{ $forum->id }}">+ 添加/移除负责人</a>
+                                            <a href="/" @if(!Auth::user()->is_super_admin) class="ml-3 btn btn-sm disabled" @else class="ml-3" @endif style="width:15%" data-toggle="modal" data-target="#add-forum-admin-form-modal-{{ $forum->id }}">+ 添加/移除负责人</a>
                                             <!-- Modal -->
                                             <div class="modal fade" id="add-forum-admin-form-modal-{{ $forum->id }}" tabindex="-1" role="dialog">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">

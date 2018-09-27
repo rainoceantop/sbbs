@@ -81,6 +81,33 @@
                                     <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ $userGroup->id }}" aria-controls="collapse{{ $userGroup->id }}">
                                     {{ $userGroup->name }}
                                     </button>
+                                    <a href="/" data-toggle="modal" data-target="#edit-group-form-modal-{{ $userGroup->id }}" title="编辑" class="btn text-success"><i class="fas fa-pen-square"></i></a>
+                                
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="edit-group-form-modal-{{ $userGroup->id }}" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">{{ $userGroup->name }}：修改用户组</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="edit-user-group-form" action="{{ route('userGroup.update') }}" method="POST">
+                                                        @csrf
+                                                        @method('put')
+                                                        <input type="hidden" name="group_id" value="{{ $userGroup->id }}">
+                                                        <div class="form-group">
+                                                            <input type="text" name="name" class="form-control" placeholder="用户组名称" value="{{ $userGroup->name }}" required>
+                                                        </div>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                                        <button type="submit" class="btn btn-primary" id="new-user-group-submit-button">编辑</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </h5>
                             </div>
 

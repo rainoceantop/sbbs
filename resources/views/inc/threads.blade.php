@@ -36,14 +36,14 @@
     <div class="card-header">
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link active" href="{{ empty($forum) ? '/' : route('forum.show', [$forum->id]) }}">最新</a>
+                <a class="nav-link @if($category_id == 0) active @endif" href="{{ empty($forum) ? '/' : route('forum.show', [$forum->id]) }}">最新</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ empty($forum) ? '' : route('forum.show', [$forum->id]) }}?type=good">精华</a>
+                <a class="nav-link @if($category_id == 1) active @endif" href="{{ empty($forum) ? '' : route('forum.show', [$forum->id]) }}?type=good">精华</a>
             </li>
             @if(!empty($forum))
             <li class="nav-item">
-            <a class="nav-link" href="{{ route('forum.show', [$forum->id]) }}?type=filed">归档</a>
+            <a class="nav-link @if($category_id == 2) active @endif" href="{{ route('forum.show', [$forum->id]) }}?type=filed">归档</a>
             </li>
             @endif
         </ul>
@@ -54,10 +54,15 @@
             <a href="{{ route('user.center', $thread->user_id) }}"><img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3"></a>
             <div class="thread-intro w-100">
                 <div class="thread-title-tags">
-                    <h5 class="break-all">@if($thread->is_top) <i class="fas fa-angle-up"></i> @endif<a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a>
+                    <!-- 标题 -->
+                    <h5 class="break-all">@if($thread->is_top) <span class="text-success"><i class="far fa-flag fa-sm mr-2" title="置顶"></i></span> @endif<a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a>
                     @foreach($thread->tags as $tag)
+                    <!-- 标签 -->
                     <span class="tag" @php echo "style='background-color:$tag->color'" @endphp><a href="{{ route('forum.show', [$thread->forum_id]) }}?tagids={{ $tag->identity }}">{{ $tag->name }}</a></span>
                     @endforeach
+                    <!-- 图标 -->
+                    @if($thread->is_filed)<span class="ml-2 text-secondary"><i class="far fa-file-alt fa-sm" title="已归档"></i></span>@endif
+                    @if($thread->is_good)<span class="ml-2 text-info"><i class="far fa-gem fa-sm" title="精华"></i></span>@endif
                     </h5>
                 </div>
                 <div class="d-flex small justify-content-between text-muted">

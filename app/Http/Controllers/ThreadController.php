@@ -11,6 +11,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\Thread as ThreadResource;
+use Carbon\Carbon;
 
 class ThreadController extends Controller
 {
@@ -21,17 +22,30 @@ class ThreadController extends Controller
         if(User::all()->count() == 0)
             return view('auth.register')->with('admin_register', TRUE);
 
+        // 记录是哪个分类
+        $category_id = 0;
         
         if(empty($request->type)){
             // 获取首页帖子
             $threads = Thread::where('is_filed', 0);
         } else {
-            // 获取首页帖子
-            $threads = Thread::where('is_filed', 0)->where('is_good', 1);
+            // 获取首页精华帖子
+            $threads = Thread::where('is_good', 1);
+            $category_id = 1;
         }
+        $threads_count = Thread::all()->count();
+        $threads_today = Thread::where('created_at', '>', Carbon::today())->count();
+        $users_count = User::all()->count();
+
+        if(!empty($request->searchInfo))
+        $threads = Thread::where('title', 'like', "%$request->searchInfo%");
         $threads = $threads->with('tags')->orderBy('is_top', 'desc')->orderBy('created_at', 'desc')->paginate(15);
         return view('index')->with('threads', $threads)
-                            ->with('forum_id', 0);
+                            ->with('forum_id', 0)
+                            ->with('category_id', $category_id)
+                            ->with('threads_count', $threads_count)
+                            ->with('threads_today', $threads_today)
+                            ->with('users_count', $users_count);
     }
 
     public function create(Request $request)
@@ -53,9 +67,12 @@ class ThreadController extends Controller
 
     public function store(Request $request)
     {   
+        // 判断是post还是put提交，post提交是创建，put提交是编辑
+        $thread = $request->isMethod('post') ? new Thread() : Thread::findOrFail($request->thread_id);
+
         if($request->isMethod('post') && Gate::denies('thread-create'))
             return "<script>alert('无权新建');history.go(-1);</script>";
-        if($request->isMethod('put') && Gate::denies('thread-update'))
+        if($request->isMethod('put') && Gate::denies('thread-update', $thread))
             return "<script>alert('无权更新');history.go(-1);</script>";
 
         $requiement = [
@@ -80,8 +97,7 @@ class ThreadController extends Controller
             $request->validate(['tags' => 'required'], ['tags.required' => '请至少选择一个标签']);
         }
 
-        // 判断是post还是put提交，post提交是创建，put提交是编辑
-        $thread = $request->isMethod('post') ? new Thread() : Thread::findOrFail($request->thread_id);
+
         $thread->user_id = $request->user_id;
         $thread->forum_id = $request->input('select-forum');
         $thread->title = $request->title;
@@ -107,7 +123,7 @@ class ThreadController extends Controller
     public function show(Thread $thread)
     {
         // 判断是否有权限访问
-        if(Gate::denies('thread-view', $thread) && $thread->user_id != Auth::user()->id)
+        if(Gate::denies('thread-view', $thread))
             return "<script>alert('无权访问');history.go(-1);</script>";
 
         // 获取此id
@@ -119,17 +135,24 @@ class ThreadController extends Controller
         $users = array_column($thread->forum->administrators()->get()->toArray(), 'id');
         $is_admin = (Auth::user()->is_super_admin == 1) || in_array(Auth::user()->id, $users);
 
+        $user_threads_count = $thread->user->threads()->count();
+        $user_today_threads = $thread->user->threads()->where('created_at', '>', Carbon::today())->count();
+        $user_id = $thread->user->id;
+
         // 渲染信息页面并携带id
         return view('thread_show')->with('thread', $thread)
                                 ->with('replies', $replies)
                                 ->with('tags', $tags)
                                 ->with('forum_id', $thread->forum->id)
-                                ->with('is_admin', $is_admin);
+                                ->with('is_admin', $is_admin)
+                                ->with('user_threads_count', $user_threads_count)
+                                ->with('user_today_threads', $user_today_threads)
+                                ->with('user_id', $user_id);
     }
 
     public function edit(Thread $thread)
     {
-        if(Gate::denies('thread-update'))
+        if(Gate::denies('thread-update', $thread))
             return "<script>alert('无权更新');history.go(-1);</script>";
         $forum_id = $thread->id;
         $forums = Forum::select(['id', 'name'])->get();

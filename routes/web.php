@@ -38,6 +38,9 @@ Route::group(['middleware'=>'auth'], function(){
     Route::post('user/register', 'UserController@create')->name('user.create');
     Route::put('user/register', 'UserController@update')->name('user.update');
     Route::get('user', 'UserController@index')->name('user.index');
+    Route::get('user/{user}/upgrade', 'UserController@upgrade')->name('user.upgrade');
+    Route::get('user/{user}/password', 'UserController@password')->name('user.center.password');
+    Route::put('user/{user}/password/set', 'UserController@passwordSet')->name('user.center.password.set');
 
     // 板块路由
     Route::get('forum/{forum}', 'ForumController@show')->name('forum.show');
@@ -45,6 +48,7 @@ Route::group(['middleware'=>'auth'], function(){
     Route::post('forum', 'ForumController@store')->name('forum.store');
     Route::post('forum/addAdmin', 'ForumController@addAdmin')->name('forum.addAdmin');
     Route::delete('forum', 'ForumController@destroy')->name('forum.destroy');
+    Route::put('forum', 'ForumController@update')->name('forum.update');
 
     // 用户组路由
     Route::get('userGroup', 'UserGroupController@index')->name('userGroup.index');
@@ -52,6 +56,7 @@ Route::group(['middleware'=>'auth'], function(){
     Route::post('userGroup/addUser', 'UserGroupController@addUser')->name('userGroup.addUser');
     Route::post('userGroup/addPermission', 'UserGroupController@addPermission')->name('userGroup.addPermission');
     Route::delete('userGroup', 'UserGroupController@destroy')->name('userGroup.destroy');
+    Route::put('userGroup', 'UserGroupController@update')->name('userGroup.update');
 
     // 标签组路由
     Route::post('tagGroup', 'TagGroupController@store')->name('tagGroup.store');

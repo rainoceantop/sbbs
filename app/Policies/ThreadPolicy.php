@@ -29,6 +29,12 @@ class ThreadPolicy
      */
     public function view(User $user, Thread $thread)
     {
+        // 帖子负责人可以查看
+        if($user->id == $thread->user_id)
+            return TRUE;
+        // 版主可以查看
+        if($this->is_forum_admin($user, $thread))
+            return TRUE;
         return $this->can($user, 1);
     }
 
@@ -40,6 +46,9 @@ class ThreadPolicy
      */
     public function create(User $user)
     {
+        // 版主自动获得发帖权
+        if($user->forums()->count() > 0)
+            return TRUE;
         return $this->can($user, 3);
     }
 
@@ -53,12 +62,33 @@ class ThreadPolicy
      */
     public function reply(User $user, Thread $thread)
     {
+        // 帖子负责人可以回复
+        if($user->id == $thread->user_id)
+            return TRUE;
+        // 版主可以回复
+        if($this->is_forum_admin($user, $thread))
+            return TRUE;
         return $this->can($user, 2);
     }
 
-    public function update(User $user)
+    // 用户是否有权更新
+    public function update(User $user, Thread $thread)
     {
+        // 帖子负责人可以更新
+        if($user->id == $thread->user_id)
+            return TRUE;
+        // 版主可以更新
+        if($this->is_forum_admin($user, $thread))
+            return TRUE;
+        // 否则只有加入更新权限的可以更新
         return $this->can($user, 4);
+    }
+
+    public function is_forum_admin(User $user, Thread $thread){
+        $users = array_column($thread->forum->administrators()->get()->toArray(), 'id');
+        if(in_array($user->id, $users))
+            return TRUE;
+        return FALSE;
     }
 
     public function can(User $user, $permission_id)

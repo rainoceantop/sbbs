@@ -12,12 +12,14 @@ class TagController extends Controller
 
     public function index()
     {
+        $is_forum_admin = Auth::user()->forums()->count() > 0;
         // 如果不是超级管理员，不让行
-        if(!Auth::user()->is_super_admin)
+        if(!Auth::user()->is_super_admin && !$is_forum_admin)
             return "<script>alert('无权访问');history.go(-1);</script>";
             
         $tags = Tag::orderBy('identity', 'asc')->get();
-        return view('admin_tags')->with('tags', $tags)->with('user', Auth::user());
+        $category_id = 3;
+        return view('admin_tags')->with('tags', $tags)->with('user', Auth::user())->with('is_forum_admin', $is_forum_admin)->with('category_id', $category_id);
     }
 
     // 更新标签组名称及标签

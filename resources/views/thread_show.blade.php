@@ -21,10 +21,15 @@
             <a href="{{ route('user.center', [$thread->user_id]) }}"><img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3"></a>
             <div class="thread-intro">
                 <div class="thread-title-tags">
+                    <!-- 标题 -->
                     <h4 class="break-all">{{ $thread->title }}
+                    <!-- 标签 -->
                     @foreach($tags as $tag)
                     <span class="tag" @php echo "style='background-color:$tag->color; font-size:1rem; font-weight:bold;'"; @endphp><a href="{{ route('forum.show', [$tag->group->forum_id]) }}?tagids={{ $tag->identity }}">{{ $tag->name }}</a></span>
                     @endforeach
+                    <!-- 图标 -->
+                    @if($thread->is_filed)<span class="ml-2 text-secondary"><i class="far fa-file-alt fa-sm" title="已归档"></i></span>@endif
+                    @if($thread->is_good)<span class="ml-2 text-info"><i class="far fa-gem fa-sm" title="精华"></i></span>@endif
                     </h4>
                 </div>
                 <div class="d-flex small justify-content-start text-muted">
@@ -39,15 +44,27 @@
         <section class="thread-body">
             <p>{!! $thread->body !!}</p>
         </section>
-        @if($is_admin)
-        <section class="thread-footer">
+        <section class="thread-footer d-flex justify-content-between">
+            <!-- 只有版主或超级管理员可以操作归档，精华，置顶 -->
+            @if($is_admin)
+            <div>
+                <!-- 归档按钮 -->
                 <a id="filed-button" data-thread_id="{{ $thread->id }}" data-is_filed="{{ $thread->is_filed }}" href="javascript:void(0)" class="mr-3">{{ $thread->is_filed ? '取消归档' : '归档' }}</a>
-
+                <!-- 精华按钮 -->
                 <a id="good-button" data-thread_id="{{ $thread->id }}" data-is_good="{{ $thread->is_good }}" href="javascript:void(0)" class="mr-3">{{ $thread->is_good ? '取消精华' : '精华' }}</a>
-
+                <!-- 置顶按钮 -->
                 <a id="top-button" data-thread_id="{{ $thread->id }}" data-is_top="{{ $thread->is_top }}" href="javascript:void(0)" class="mr-3">{{ $thread->is_top ? '取消置顶' : '置顶' }}</a>
+            </div>
+            @endif
+            <!-- 超级管理员，版主，帖子负责人都可操作未归档的帖子 -->
+            @if($thread->is_filed == 0)
+            @can('thread-update', $thread)
+            <div>
+                <a href="{{ route('thread.edit', [$thread->id]) }}">编辑</a>
+            </div>
+            @endcan
+            @endif
         </section>
-        @endif
     </div>
 </div>
 <!-- 评论回复内容 -->
@@ -73,8 +90,15 @@
                             </span>
                         </div>
                         <div class="text-right text-grey">
+                        <!-- 验证是否登录 -->
                         @auth
+                        <!-- 验证是否归档 -->
+                        @if($thread->is_filed == 0)
+                        <!-- 验证是否有评论权限 -->
+                        @can('thread-reply', $thread)
                             <a class="reply-button" data-index="{{ $reply->id }}" data-to_user_id="{{ $reply->from_user_id }}" data-user_name="{{ App\User::find($reply->from_user_id)->name }}" title="回复"><i class="fas fa-reply"></i></a>
+                        @endcan
+                        @endif
                         @endauth
                         &emsp;{{ $index+1 }}楼
                         </div>
@@ -95,7 +119,11 @@
                 <span class="d-flex justify-content-center">暂无评论</span>
             @endforelse
 
+            <!-- 验证是否登录 -->
             @auth
+            <!-- 验证是否归档 -->
+            @if($thread->is_filed == 0)
+            <!-- 验证是否有评论权限 -->
             @can('thread-reply', $thread)
             <hr>
             <li class="media new-reply">
@@ -128,6 +156,7 @@
                 </div>
             </li>
             @endcan
+            @endif
             @endauth
         </ul>
     </div>

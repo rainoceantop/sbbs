@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Forum extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'description'];
 
     public function threads()
     {

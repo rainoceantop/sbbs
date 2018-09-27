@@ -9,27 +9,42 @@ use App\TagGroup;
 use Auth;
 use App\User;
 use App\ForumUser;
+use Carbon\Carbon;
 
 class ForumController extends Controller
 {
     // 管理板块页面
     public function index()
     {
+        // 判断是否板块管理员
+        $is_forum_admin = Auth::user()->forums()->count() > 0;
         // 如果不是超级管理员，不让行
-        if(!Auth::user()->is_super_admin)
+        if(!Auth::user()->is_super_admin && !$is_forum_admin)
             return "<script>alert('无权访问');history.go(-1);</script>";
 
         $forums = Forum::with(['tagGroups'])->get();
+        $category_id = 2;
         foreach($forums as $forum){
             $forum['notJoinYetUsersId'] = array_diff(array_column(User::all()->toArray(), 'id'), array_column($forum->administrators->toArray(), 'id'));
         }
-        return view('admin_forums')->with('forums', $forums)->with('user', Auth::user());
+
+        return view('admin_forums')->with('forums', $forums)->with('user', Auth::user())->with('is_forum_admin', $is_forum_admin)->with('category_id', $category_id);
     }
 
     // 存储板块
     public function store(Request $request)
     {
         Forum::create($request->all());
+        return redirect()->back();
+    }
+
+    // 更新板块
+    public function update(Request $request)
+    {
+        $forum = Forum::find($request->forum_id);
+        $forum->name = $request->name;
+        $forum->description = $request->description;
+        $forum->save();
         return redirect()->back();
     }
 
@@ -61,6 +76,7 @@ class ForumController extends Controller
         }
 
         $type = $request->type;
+        $category_id = 0;
         if(empty($type)){
             // 查找标签
             $threads = $forum->threads()->where('is_filed', 0)->with(['tags']);
@@ -68,11 +84,13 @@ class ForumController extends Controller
             switch($type){
                 // 获取精华帖子
                 case 'good':
-                    $threads = $forum->threads()->where('is_filed', 0)->where('is_good', 1)->with(['tags']);
+                    $threads = $forum->threads()->where('is_good', 1)->with(['tags']);
+                    $category_id = 1;
                     break;
                 // 获取归档帖子
                 case 'filed':
                     $threads = $forum->threads()->where('is_filed', 1)->with(['tags']);
+                    $category_id = 2;
                     break; 
             }
         }
@@ -87,10 +105,16 @@ class ForumController extends Controller
         }
         $threads = $threads->orderBy('is_top', 'desc')->orderBy('created_at', 'desc')->paginate(15);
 
+        $forum_threads_count = $forum->threads()->count();
+        $forum_today_threads = $forum->threads()->where('created_at', '>', Carbon::today())->count();
+
         return view('index')->with('threads', $threads)
                             ->with('forum_id', $forum->id)
                             ->with('forum', $forum)
-                            ->with('tag_ids', $tag_ids);
+                            ->with('tag_ids', $tag_ids)
+                            ->with('category_id', $category_id)
+                            ->with('forum_threads_count', $forum_threads_count)
+                            ->with('forum_today_threads', $forum_today_threads);
     }
 
     public function addAdmin(Request $request)

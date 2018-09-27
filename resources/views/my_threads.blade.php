@@ -23,10 +23,14 @@
                 <a href="{{ route('user.center', $thread->user_id) }}"><img class="user-img-4 mr-3" src="{{ asset('imgs/user.jpeg') }}"></a>
                 <div class="thread-intro w-100">
                     <div class="thread-title-tags">
-                        <h5 class="break-all"><a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a>
+                        <h5 class="break-all">@if($thread->is_top) <span class="text-success"><i class="far fa-flag fa-sm mr-2" title="置顶"></i></span> @endif<a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a>
                         @foreach($thread->tags as $tag)
                         <span class="tag" @php echo "style='background-color:$tag->color'" @endphp><a href="{{ route('forum.show', [$thread->forum_id]) }}?tagids={{ $tag->identity }}">{{ $tag->name }}</a></span>
                         @endforeach
+                        <!-- 图标 -->
+                        @if($thread->is_filed)<span class="ml-2 text-secondary"><i class="far fa-file-alt fa-sm" title="已归档"></i></span>@endif
+                        @if($thread->is_good)<span class="ml-2 text-info"><i class="far fa-gem fa-sm" title="精华"></i></span>@endif
+
                         </h5>
                     </div>
                     <div class="d-flex small justify-content-between">
