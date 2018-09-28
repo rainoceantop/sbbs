@@ -20,7 +20,7 @@
             <div class="card-body card-thread-list">
             @foreach($threads as $thread)
             <section class="thread-item thread-title">
-                <a href="{{ route('user.center', $thread->user_id) }}"><img class="user-img-4 mr-3" src="{{ asset('imgs/user.jpeg') }}"></a>
+                <a href="{{ route('user.center', $thread->user_id) }}"><img class="user-img-4 mr-3" src="{{ asset($thread->user->avatar) }}"></a>
                 <div class="thread-intro w-100">
                     <div class="thread-title-tags">
                         <h5 class="break-all">@if($thread->is_top) <span class="text-success"><i class="far fa-flag fa-sm mr-2" title="置顶"></i></span> @endif<a href="{{ route('thread.show', [$thread->id]) }}">{{ $thread->title }}</a>

@@ -20,7 +20,7 @@
                     <a class="nav-link" href="{{ route('user.center.password', [$user->id]) }}">密码</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">头像</a>
+                    <a class="nav-link" href="{{ route('user.center.avatar', [$user->id]) }}">头像</a>
                 </li>
                 @endif
             </ul>

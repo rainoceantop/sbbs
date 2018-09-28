@@ -1,7 +1,7 @@
 <div class="card">
     <div class="m-3">
         <div class="user-logo text-center">
-            <img class="user-img-2 mb-2" src="{{asset('imgs/user.jpeg')}}" />
+            <img class="user-img-2 mb-2" src="{{asset($thread->user->avatar)}}" />
             <h5 class="text-center">{{ $thread->user->name }}</h5>
         </div>
     </div>

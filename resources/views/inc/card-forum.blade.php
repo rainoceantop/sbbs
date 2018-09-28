@@ -34,7 +34,7 @@
         <div class="row">
             @foreach($forum->administrators as $user)
             <div class="col-4 text-center">
-                <a href="{{ route('user.center', [$user->id]) }}" title="{{ $user->name }}"><img class="w-100 img-responsive rounded" src="{{ $user->avatar }}"></a>
+                <a href="{{ route('user.center', [$user->id]) }}" title="{{ $user->name }}"><img class="w-100 img-responsive rounded" src="{{ asset($user->avatar) }}"></a>
             </div>
             @endforeach
         </div>

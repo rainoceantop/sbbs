@@ -41,6 +41,8 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('user/{user}/upgrade', 'UserController@upgrade')->name('user.upgrade');
     Route::get('user/{user}/password', 'UserController@password')->name('user.center.password');
     Route::put('user/{user}/password/set', 'UserController@passwordSet')->name('user.center.password.set');
+    Route::get('user/{user}/avatar', 'UserController@avatar')->name('user.center.avatar');
+    Route::post('user/{user}/avatar/set', 'UserController@avatarSet')->name('user.center.avatar.set');
 
     // 板块路由
     Route::get('forum/{forum}', 'ForumController@show')->name('forum.show');

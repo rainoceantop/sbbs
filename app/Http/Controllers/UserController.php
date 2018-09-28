@@ -36,14 +36,12 @@ class UserController extends Controller
 
         $user = User::findOrFail($user->id);
         $category_id = 0;
-        $category_sub_id = 0;
         $user_threads_count = $user->threads()->count();
         $user_good_threads = $user->threads()->where('is_good', 1)->count();
         $user_groups = implode(' , ', array_column($user->groups()->get()->toArray(), 'name'));
         $user_created_at = Carbon::parse($user->created_at)->toDateString();
         return view('my_center_info')->with('user', $user)
                                 ->with('category_id', $category_id)
-                                ->with('category_sub_id', $category_sub_id)
                                 ->with('user_threads_count', $user_threads_count)
                                 ->with('user_good_threads', $user_good_threads)
                                 ->with('user_groups', $user_groups)
@@ -58,10 +56,8 @@ class UserController extends Controller
 
         $user = User::find($user->id);
         $category_id = 0;
-        $category_sub_id = 1;
         return view('my_center_password')->with('user', $user)
-                                         ->with('category_id', $category_id)
-                                         ->with('category_sub_id', $category_sub_id);
+                                         ->with('category_id', $category_id);
     }
 
     // 修改密码
@@ -78,6 +74,46 @@ class UserController extends Controller
         }
         return redirect()->back()->with('fail', '密码修改失败，请确保输入正确');
         
+    }
+
+    public function avatar(User $user)
+    {
+        // 如果访问用户和当前用户不是同一个人，返回
+        if($user->id != Auth::user()->id)
+            return "<script>alert('无权访问');history.go(-1);</script>";
+    
+        $user = User::find($user->id);
+        $category_id = 0;
+        return view('my_center_avatar')->with('user', $user)
+                                       ->with('category_id', $category_id);
+    }
+
+    public function avatarSet(Request $request)
+    {
+        if($request->user_id != Auth::user()->id)
+            return "<script>alert('无权访问');history.go(-1);</script>";
+            
+
+        if ($request->hasFile('avatar')) {
+            if ($request->file('avatar')->isValid()) {
+                $extension = $request->avatar->extension();
+                $acceptType = ['gif','jpeg','png','jpg','bmp'];
+                if(!in_array($extension, $acceptType))
+                    return 'fail';
+
+                $avatar = $request->file('avatar');
+                $path = 'storage/'.$avatar->store('avatars', 'public');
+                $user = User::find($request->user_id);
+                $user->avatar = $path;
+                $user->save();
+                return asset($path);
+            } else{
+                return 'fail';
+            } 
+        }else{
+            return 'fail';
+        }
+
     }
 
     // 获取用户帖子

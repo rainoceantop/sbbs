@@ -18,7 +18,7 @@
 <div class="card card-thread mb-3">
     <div class="card-body">
         <section class="thread-title">
-            <a href="{{ route('user.center', [$thread->user_id]) }}"><img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3"></a>
+            <a href="{{ route('user.center', [$thread->user_id]) }}"><img src="{{ asset($thread->user->avatar) }}" class="user-img-4 mr-3"></a>
             <div class="thread-intro">
                 <div class="thread-title-tags">
                     <!-- 标题 -->
@@ -78,7 +78,7 @@
             @forelse($replies as $index => $reply)
             <!-- 单个评论item -->
             <li class="media thread-replies-item">
-                <a href="{{ route('user.center', [$reply->from_user_id]) }}" class="mr-3"><img class="user-img-4" src="{{ asset('imgs/user.jpeg') }}"></a>
+                <a href="{{ route('user.center', [$reply->from_user_id]) }}" class="mr-3"><img class="user-img-4" src="{{ asset( $reply->user->avatar ) }}"></a>
                 <div class="media-body">
                     <div class="d-flex justify-content-between small text-muted">
                         <div>
@@ -127,7 +127,7 @@
             @can('thread-reply', $thread)
             <hr>
             <li class="media new-reply">
-                <a href="" class="mr-3"><img class="user-img-4" src="{{ asset('imgs/user.jpeg') }}"></a>
+                <a href="" class="mr-3"><img class="user-img-4" src="{{ asset( Auth::user()->avatar ) }}"></a>
                 <div class="media-body">
                     <div class="d-flex justify-content-between small text-muted">
                         <div>
@@ -148,7 +148,7 @@
                         <input type="hidden" name="to_user_id" value="{{ $thread->user_id }}">
                         <textarea name="body" rows="1" class="form-control mb-2" placeholder="回复楼主"></textarea>
                         <div class="d-flex justify-content-between">
-                            <span><i class="fas fa-edit"></i>高级回复</span>
+                            <span></span>
                             <span><button type="submit" class="btn btn-sm btn-primary">回复</button></span>
                         </div>
                     </form>

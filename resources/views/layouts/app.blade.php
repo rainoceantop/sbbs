@@ -50,6 +50,28 @@ $have_forum_id = isset($forum_id);
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('user.center', Auth::user()->id) }}">个人中心</a>
                                 <a class="dropdown-item" href="{{ route('user.threads', Auth::user()->id) }}">论坛帖子</a>
+                                <!-- 是否版主或超级管理员 -->
+                                @if(Auth::user()->forums()->count() > 0 || Auth::user()->is_super_admin)
+                                <div class="dropdown-divider"></div>
+                                <a href="{{ route('forum.index') }}" class="dropdown-item">板块管理</a>
+                                <a href="{{ route('tag.index') }}" class="dropdown-item">标签管理</a>
+                                <div class="dropdown-divider"></div>
+                                @endif
+                                @if(Auth::user()->is_super_admin)
+                                <div class="dropdown-divider"></div>
+                                <a href="{{ route('userGroup.index') }}" class="dropdown-item">用户组管理</a>
+                                <div class="dropdown-divider"></div>
+                                @endif
+                                @can('user-view', Auth::user())
+                                <div class="dropdown-divider"></div>
+                                <a href="{{ route('user.index') }}" class="dropdown-item">用户管理</a>
+                                <div class="dropdown-divider"></div>
+                                @endcan
+                                @can('user-register')
+                                <div class="dropdown-divider"></div>
+                                <a href="{{ route('user.register') }}" class="dropdown-item">注册用户</a>
+                                <div class="dropdown-divider"></div>
+                                @endcan
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">

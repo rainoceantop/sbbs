@@ -77,6 +77,7 @@ class ForumController extends Controller
 
         $type = $request->type;
         $category_id = 0;
+        $user_id = 0;
         if(empty($type)){
             // 查找标签
             $threads = $forum->threads()->where('is_filed', 0)->with(['tags']);
@@ -92,6 +93,12 @@ class ForumController extends Controller
                     $threads = $forum->threads()->where('is_filed', 1)->with(['tags']);
                     $category_id = 2;
                     break; 
+                // 获取用户帖子
+                case "user":
+                    $threads = $forum->threads()->where('user_id', $request->user_id);
+                    $category_id = 3;
+                    $user_id = $request->user_id;
+                break;
             }
         }
 
@@ -104,6 +111,8 @@ class ForumController extends Controller
             }
         }
         $threads = $threads->orderBy('is_top', 'desc')->orderBy('created_at', 'desc')->paginate(15);
+        // 获取发表过帖子的用户
+        $forum_users = User::has('threads')->get();
 
         $forum_threads_count = $forum->threads()->count();
         $forum_today_threads = $forum->threads()->where('created_at', '>', Carbon::today())->count();
@@ -111,8 +120,10 @@ class ForumController extends Controller
         return view('index')->with('threads', $threads)
                             ->with('forum_id', $forum->id)
                             ->with('forum', $forum)
+                            ->with('forum_users', $forum_users)
                             ->with('tag_ids', $tag_ids)
                             ->with('category_id', $category_id)
+                            ->with('user_id', $user_id)
                             ->with('forum_threads_count', $forum_threads_count)
                             ->with('forum_today_threads', $forum_today_threads);
     }

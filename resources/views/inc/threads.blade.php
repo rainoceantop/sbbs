@@ -46,12 +46,20 @@
             <a class="nav-link @if($category_id == 2) active @endif" href="{{ route('forum.show', [$forum->id]) }}?type=filed">归档</a>
             </li>
             @endif
+            <li class="nav-item dropdown justify-content-end">
+                <a class="nav-link dropdown-toggle @if($category_id == 3) active @endif" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">发贴人@if($user_id) ：{{ App\User::find($user_id)->name }} @endif</a>
+                <div class="dropdown-menu">
+                @foreach($forum_users as $forum_user)
+                    <a class="dropdown-item"  href="{{ empty($forum) ? '' : route('forum.show', [$forum->id]) }}?type=user&user_id={{ $forum_user->id }}">@if($user_id == $forum_user->id) <i class="far fa-dot-circle text-success"></i>&nbsp; @else &emsp;&nbsp; @endif{{ $forum_user->name }}</a>
+                @endforeach
+                </div>
+            </li>
         </ul>
     </div>
     <div class="card-body card-thread-list">
         @foreach($threads as $thread)
         <section class="thread-item thread-title">
-            <a href="{{ route('user.center', $thread->user_id) }}"><img src="{{ asset('imgs/user.jpeg') }}" class="user-img-4 mr-3"></a>
+            <a href="{{ route('user.center', $thread->user_id) }}"><img src="{{ asset( $thread->user->avatar ) }}" class="user-img-4 mr-3"></a>
             <div class="thread-intro w-100">
                 <div class="thread-title-tags">
                     <!-- 标题 -->

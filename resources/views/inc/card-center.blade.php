@@ -1,7 +1,7 @@
 <section class="col-lg-2 hidden-md hidden-sm left">
     <div class="card">
         <div class="card-body text-center">
-            <img src="{{ asset('imgs/user.jpeg') }}" class="user-img-2">
+            <img src="{{ asset( $user->avatar ) }}" class="user-img-2">
             <br>
             {{ $user->name }}
         </div>

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\Thread as ThreadResource;
 use Carbon\Carbon;
+use Permission;
 
 class ThreadController extends Controller
 {
@@ -24,14 +25,27 @@ class ThreadController extends Controller
 
         // 记录是哪个分类
         $category_id = 0;
+        // 用户搜索需要记录id，否则返回0
+        $user_id = 0;
         
         if(empty($request->type)){
             // 获取首页帖子
             $threads = Thread::where('is_filed', 0);
         } else {
-            // 获取首页精华帖子
-            $threads = Thread::where('is_good', 1);
-            $category_id = 1;
+            switch($request->type){
+                case "good":
+                    // 获取首页精华帖子
+                    $threads = Thread::where('is_good', 1);
+                    $category_id = 1;
+                    break;
+                // 分类id 2 为归档，首页没有归档
+                case "user":
+                    // 获取用户帖子
+                    $threads = Thread::where('user_id', $request->user_id);
+                    $category_id = 3;
+                    $user_id = $request->user_id;
+                    break;
+            }
         }
         $threads_count = Thread::all()->count();
         $threads_today = Thread::where('created_at', '>', Carbon::today())->count();
@@ -40,9 +54,15 @@ class ThreadController extends Controller
         if(!empty($request->searchInfo))
         $threads = Thread::where('title', 'like', "%$request->searchInfo%");
         $threads = $threads->with('tags')->orderBy('is_top', 'desc')->orderBy('created_at', 'desc')->paginate(15);
+
+        // 获取发表过帖子的用户
+        $forum_users = User::has('threads')->get();
+
         return view('index')->with('threads', $threads)
                             ->with('forum_id', 0)
+                            ->with('forum_users', $forum_users)
                             ->with('category_id', $category_id)
+                            ->with('user_id', $user_id)
                             ->with('threads_count', $threads_count)
                             ->with('threads_today', $threads_today)
                             ->with('users_count', $users_count);
