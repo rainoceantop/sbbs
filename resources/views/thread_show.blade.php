@@ -168,7 +168,7 @@
                             <footer class="blockquote-footer text-right"><cite class="small"><img src="{{ asset(App\User::find($reply->to_user_id)->avatar) }}" class="user-img-5">{{ App\User::find($reply->from_user_id)->name }}</cite></footer>
                         </blockquote>
                         @endif
-                        {{ $reply->body }}
+                        {!! $reply->body !!}
                     </div>
                 </div>
             </li>
