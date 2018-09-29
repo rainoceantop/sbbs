@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('title', '首页')
+@if(empty($forum))
+    @section('title', '首页')
+@else
+    @section('title', $forum->name)
+@endif
 
 @section('main')
 @include('inc.threads')

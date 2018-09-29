@@ -27,6 +27,7 @@
             </div>
             <div class="card-body">
                 <div class="col-lg-6 mx-auto">
+                    @include('inc.message')
                     @if (session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}

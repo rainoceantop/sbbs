@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '个人中心')
+@section('title', '用户组管理')
 
 @section('link')
 @endsection
@@ -57,9 +57,13 @@
                                         @method('delete')
                                         <div class="form-group">
                                             @foreach($userGroups as $userGroup)
-                                            <input type="checkbox" name="groups[]" value="{{ $userGroup->id }}">{{ $userGroup->name }}&emsp;
+                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                <input type="checkbox" class="custom-control-input" name="groups[]" id="userGroup-{{ $userGroup->id }}" value="{{ $userGroup->id }}">
+                                                <label class="custom-control-label" for="userGroup-{{ $userGroup->id }}">{{ $userGroup->name }}</label>
+                                            </div>
                                             @endforeach
                                         </div>
+                                        <hr>
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                                         <button type="button" class="btn btn-danger" id="delete-user-group-submit-button">删除</button>
                                     </form>
@@ -142,10 +146,13 @@
                                                             <form id="add-group-user-form" action="{{ route('userGroup.addUser') }}" method="POST">
                                                                 @csrf
                                                                 <input type="hidden" name="user_group_id" value="{{ $userGroup->id }}">
-                                                                <div class="text-danger"><strong>删除：</strong>
+                                                                <div class="text-danger"><strong>移除：</strong>
                                                                 @foreach($userGroup->users as $user)
                                                                     <!-- 已加入用户 -->
-                                                                    <input type="checkbox" name="del_users[]" value="{{ $user->id }}"> {{ $user->name }} &emsp;
+                                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                                        <input type="checkbox" class="custom-control-input" name="del_users[]" id="user-{{ $user->id }}" value="{{ $user->id }}">
+                                                                        <label class="custom-control-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
+                                                                    </div>
                                                                 @endforeach
                                                                 </div>
                                                                 <hr>
@@ -153,7 +160,10 @@
                                                                 @foreach($userGroup->notJoinYetUsersId as $user_id)
                                                                     <!-- 获取未加入用户 -->
                                                                     @php $user = App\User::find($user_id) @endphp
-                                                                    <input type="checkbox" name="add_users[]" value="{{ $user->id }}"> {{ $user->name }} &emsp;
+                                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                                        <input type="checkbox" class="custom-control-input" name="add_users[]" id="user-{{ $user->id }}" value="{{ $user->id }}">
+                                                                        <label class="custom-control-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
+                                                                    </div>
                                                                 @endforeach
                                                                 </div>
                                                                 <hr>
@@ -191,10 +201,13 @@
                                                             <form id="add-group-user-form" action="{{ route('userGroup.addPermission') }}" method="POST">
                                                                 @csrf
                                                                 <input type="hidden" name="user_group_id" value="{{ $userGroup->id }}">
-                                                                <div class="text-danger"><strong>删除：</strong>
+                                                                <div class="text-danger"><strong>移除：</strong>
                                                                 @foreach($userGroup->permissions as $permission)
-                                                                    <!-- 已加入用户 -->
-                                                                    <input type="checkbox" name="del_permissions[]" value="{{ $permission->id }}"> {{ $permission->name }} &emsp;
+                                                                    <!-- 已加入权限 -->
+                                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                                        <input type="checkbox" class="custom-control-input" name="del_permissions[]" id="permission-{{ $permission->id }}" value="{{ $permission->id }}">
+                                                                        <label class="custom-control-label" for="permission-{{ $permission->id }}">{{ $permission->name }}</label>
+                                                                    </div>
                                                                 @endforeach
                                                                 </div>
                                                                 <hr>
@@ -202,7 +215,10 @@
                                                                 @foreach($userGroup->notJoinYetPermissionsId as $permission_id)
                                                                     <!-- 获取未加入权限 -->
                                                                     @php $permission = App\Permission::find($permission_id) @endphp
-                                                                    <input type="checkbox" name="add_permissions[]" value="{{ $permission->id }}"> {{ $permission->name }} &emsp;
+                                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                                        <input type="checkbox" class="custom-control-input" name="add_permissions[]" id="permission-{{ $permission->id }}" value="{{ $permission->id }}">
+                                                                        <label class="custom-control-label" for="permission-{{ $permission->id }}">{{ $permission->name }}</label>
+                                                                    </div>
                                                                 @endforeach
                                                                 </div>
                                                                 <hr>

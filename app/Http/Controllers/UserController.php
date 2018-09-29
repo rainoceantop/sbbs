@@ -67,10 +67,24 @@ class UserController extends Controller
             return "<script>alert('无权访问');history.go(-1);</script>";
         
         $user = User::find($user->id);
-        if(Hash::check($request->old_password, $user->password) && $request->new_password == $request->confirm_password){
-            $user->password = Hash::make($request->new_password);
-            $user->save();
-            return redirect()->back()->with('success', '密码修改成功');
+        if(Hash::check($request->old_password, $user->password)){
+
+            $requiement = [
+                'new_password' => 'required|string|max:255|min:6',
+                'confirm_password' => 'required|string',
+            ];
+            $message = [
+                'new_password.required' => '请输入密码',
+                'confirm_password.required' => '请输入确认密码',
+                'new_password.min' => '密码不能小于6位',
+            ];
+            if($request->new_password == $request->confirm_password){
+                // 验证注册数据
+                $request->validate($requiement, $message);
+                $user->password = Hash::make($request->new_password);
+                $user->save();
+                return redirect()->back()->with('success', '密码修改成功');   
+            }
         }
         return redirect()->back()->with('fail', '密码修改失败，请确保输入正确');
         

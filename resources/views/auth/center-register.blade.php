@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', '用户注册')
+
 @section('content')
 <div class="row justify-content-center">
     @include('inc.card-center')

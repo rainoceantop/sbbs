@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '个人中心')
+@section('title', '板块管理')
 
 @section('link')
 @endsection
@@ -67,9 +67,13 @@
                                         @method('delete')
                                         <div class="form-group">
                                             @foreach($forums as $forum)
-                                            <input type="checkbox" name="forums[]" value="{{ $forum->id }}">{{ $forum->name }}&emsp;
+                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                <input type="checkbox" class="custom-control-input" name="forums[]" id="forum-{{ $forum->id }}" value="{{ $forum->id }}">
+                                                <label class="custom-control-label" for="forum-{{ $forum->id }}">{{ $forum->name }}</label>
+                                            </div>
                                             @endforeach
                                         </div>
+                                        <hr>
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                                         <button type="button" class="btn btn-danger" id="delete-forum-submit-button">删除</button>
                                     </form>
@@ -238,18 +242,24 @@
                                                             <form id="add-forum-admin-form" action="{{ route('forum.addAdmin') }}" method="POST">
                                                                 @csrf
                                                                 <input type="hidden" name="forum_id" value="{{ $forum->id }}">
-                                                                <div class="text-danger"><strong>删除：</strong>
+                                                                <div class="text-danger custom-control-inline"><strong>移除：</strong>
                                                                 @foreach($forum->administrators as $user)
                                                                     <!-- 已加入用户 -->
-                                                                    <input type="checkbox" name="del_users[]" value="{{ $user->id }}"> {{ $user->name }} &emsp;
+                                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                                        <input type="checkbox" class="custom-control-input" name="del_users[]" id="user-{{ $user->id }}" value="{{ $user->id }}">
+                                                                        <label class="custom-control-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
+                                                                    </div>
                                                                 @endforeach
                                                                 </div>
                                                                 <hr>
-                                                                <div class="text-success"><strong>添加：</strong>
+                                                                <div class="text-success custom-control-inline"><strong>添加：</strong>
                                                                 @foreach($forum->notJoinYetUsersId as $user_id)
                                                                     <!-- 获取未加入用户 -->
                                                                     @php $user = App\User::find($user_id) @endphp
-                                                                    <input type="checkbox" name="add_users[]" value="{{ $user->id }}"> {{ $user->name }} &emsp;
+                                                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                                                        <input type="checkbox" class="custom-control-input" name="add_users[]" id="user-{{ $user->id }}" value="{{ $user->id }}">
+                                                                        <label class="custom-control-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
+                                                                    </div>
                                                                 @endforeach
                                                                 </div>
                                                                 <hr>

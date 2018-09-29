@@ -30,6 +30,7 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('thread/{thread}/cancelFiled', 'ThreadController@cancelFiled')->name('thread.cancelFiled');
     Route::get('thread/{thread}/cancelGood', 'ThreadController@cancelGood')->name('thread.cancelGood');
     Route::get('thread/{thread}/cancelTop', 'ThreadController@cancelTop')->name('thread.cancelTop');
+    Route::post('thread/tagsEdit', 'ThreadController@tagsEdit')->name('thread.tags.edit');
 
     // 用户路由
     Route::get('user/{user}/center', 'UserController@center')->name('user.center');

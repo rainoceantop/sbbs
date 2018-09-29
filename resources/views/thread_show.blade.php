@@ -60,7 +60,40 @@
             @if($thread->is_filed == 0)
             @can('thread-update', $thread)
             <div>
-                <a href="{{ route('thread.edit', [$thread->id]) }}">编辑</a>
+                <a class="mr-3" href="{{ route('thread.edit', [$thread->id]) }}">编辑</a>
+                @if(!empty($thread->forum->tagGroups()->get()->toArray()))
+                <a class="mr-3" href="/" data-toggle="modal" data-target=".edit-tags-button">标签</a>
+                @endif
+                <!-- modal -->
+                <div class="modal fade edit-tags-button" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content card-body">
+                        <h5>{{ $thread->title }}：标签修改</h5>
+                        <hr>
+                        <form action="{{ route('thread.tags.edit') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="thread_id" value="{{ $thread->id }}">
+                        @foreach($thread->forum->tagGroups as $tagGroup)
+                            <div class="mb-3">
+                            <span class="text-muted">{{ $tagGroup->name }}：</span>
+                            @foreach($tagGroup->tags as $tag)
+                            <div class="custom-control custom-checkbox custom-control-inline">
+                                <input class="custom-control-input" id="tag-{{ $tag->identity }}" type="checkbox" name="tags[]" @if(in_array($tag->identity, array_column($thread->tags->toArray(), 'identity'))) checked @endif value="{{ $tag->identity }}">
+                                <label class="custom-control-label" for="tag-{{ $tag->identity }}">{{ $tag->name }}</label>
+                            </div>
+                            @endforeach
+                            </div>
+                        @endforeach
+                        <hr>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block form-control">修改</button>
+                            </div>    
+                        </form>
+
+                        </div>
+                    </div>
+                </div>
+                <a href="{{ route('thread.edit', [$thread->id]) }}">负责人</a>
             </div>
             @endcan
             @endif

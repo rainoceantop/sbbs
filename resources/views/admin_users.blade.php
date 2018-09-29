@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '个人中心')
+@section('title', '用户管理')
 
 @section('link')
 @endsection

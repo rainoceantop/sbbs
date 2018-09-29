@@ -70,6 +70,11 @@ $edit = isset($thread) ? TRUE : FALSE
         let selectTagsArea = $('.select-tags-area')
         let forum_id = selectForum.val()
         let tagGroups = JSON.parse('@php echo $tagGroups @endphp')
+        // 判断是否编辑
+        let edit = '@php echo $edit; @endphp'
+        // 如果编辑获取原来的标签
+        let thread_tags = ('@php echo $edit ? implode("_", array_column($thread->tags->toArray(), "identity")) : "[]" @endphp').split('_')
+
         // 初始化当前选择板块标签
         getTags(forum_id)
         
@@ -85,13 +90,17 @@ $edit = isset($thread) ? TRUE : FALSE
                 if(tagGroup.forum_id === parseInt(forum_id)){
                     // 标签组展示
                     html += `
-                    <p class="text-muted">
+                    <p class="text-muted custom-control-inline">
                         ${tagGroups[i].name}&nbsp;:
                     `
                     // 获取标签组的标签
                     let tags = tagGroup.tags
                     for(let i in tags){
-                        html += `&nbsp;<input type="checkbox" name="tags[]" value=${tags[i].identity}>${tags[i].name}&nbsp;`
+                        html += `
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" name="tags[]" id="tag-${ tags[i].identity }" ${ $.inArray(String(tags[i].identity), thread_tags) >= 0 ? 'checked' : '' } value=${tags[i].identity}>
+                            <label class="custom-control-label" for="tag-${ tags[i].identity }">${tags[i].name}</label>
+                        </div>`
                     }
                     html += `</p>`
                 }

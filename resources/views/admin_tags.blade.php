@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '个人中心')
+@section('title', '标签管理')
 
 @section('link')
 @endsection
@@ -71,7 +71,7 @@
                                 </div>
                                 </div>
                             </td>
-                            <td><a href="javascript:void(0)" class="text-danger tag-delete-button @if( !Auth::user()->is_super_admin && !in_array(Auth::user()->id, array_column($tag->forum->administrators()->get()->toArray(), 'id'))) btn btn-sm disabled @endif" data-tid="{{ $tag->identity }}" data-tname="{{ $tag->name }}">删除</a></td>
+                            <td><a href="javascript:void(0)" class="text-danger tag-delete-button @if( !Auth::user()->is_super_admin && !in_array(Auth::user()->id, array_column($tag->forum->administrators()->get()->toArray(), 'id'))) btn btn-sm disabled @endif" data-tid="{{ $tag->identity }}" data-tname="{{ $tag->name }}" title="删除标签：{{ $tag->name }}"><i class="fas fa-minus-circle"></i></a></td>
                         </tr>
                     @endforeach
                     </tbody>

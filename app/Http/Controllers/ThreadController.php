@@ -140,6 +140,18 @@ class ThreadController extends Controller
         return redirect()->route('thread.show', [$thread]);
     }
 
+    public function tagsEdit(Request $request)
+    {
+        $thread = Thread::find($request->thread_id);
+        // 删除原先的关联
+        $thread->tags()->detach();
+        // 将thread_id，tag_id关联
+        foreach($request->tags as $tag){
+            $thread->tags()->attach($tag);
+        }
+        return redirect()->route('thread.show', [$thread]);
+    }
+
     public function show(Thread $thread)
     {
         // 判断是否有权限访问
