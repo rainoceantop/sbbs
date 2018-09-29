@@ -63,7 +63,7 @@ $edit = isset($thread) ? TRUE : FALSE
             syncScrolling: "double",
             emoji: true,
             path : "/editor.md/lib/", // Autoload modules mode, codemirror, marked... dependents libs path
-            saveHTMLToTextarea: true
+            saveHTMLToTextarea: true,
         })
 
         let selectForum = $('#select-forum')
