@@ -24,6 +24,7 @@
                         <tr>
                         <th scope="col">标签标识码</th>
                         <th scope="col">标签名称</th>
+                        <th scope="col">标签颜色</th>
                         <th scope="col">所属标签组</th>
                         <th scope="col">所属板块</th>
                         <th scope="col">帖子数量</th>
@@ -35,6 +36,7 @@
                         <tr>
                             <th scope="row">{{ $tag->identity }}</th>
                             <td>{{ $tag->name }}</td>
+                            <td><i class="fas fa-palette" style="color: {{ $tag->color }}"></i></td>
                             <td>{{ $tag->group->name }}</td>
                             <td>{{ $tag->group->forum->name }}</td>
                             <td>
