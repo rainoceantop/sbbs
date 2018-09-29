@@ -38,7 +38,7 @@ class TagController extends Controller
 
         foreach($tags as $tag){
             if(!empty($tag)){
-                $tag = explode(',', trim($tag));
+                $tag = explode('|', trim($tag));
                 $tag_identity = trim($tag[0]);
                 $tag_name = trim($tag[1]);
                 $tag_color = trim($tag[2]);

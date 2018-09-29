@@ -140,15 +140,31 @@ class ThreadController extends Controller
         return redirect()->route('thread.show', [$thread]);
     }
 
+    // 修改帖子标签
     public function tagsEdit(Request $request)
     {
         $thread = Thread::find($request->thread_id);
+        if(Gate::denies('thread-update', $thread))
+            return "<script>alert('无权修改');history.go(-1);</script>";
+
         // 删除原先的关联
         $thread->tags()->detach();
         // 将thread_id，tag_id关联
         foreach($request->tags as $tag){
             $thread->tags()->attach($tag);
         }
+        return redirect()->route('thread.show', [$thread]);
+    }
+
+    // 修改帖子负责人
+    public function userEdit(Request $request)
+    {
+        $thread = Thread::find($request->thread_id);
+        if(Gate::denies('thread-update', $thread))
+            return "<script>alert('无权修改');history.go(-1);</script>";
+
+        $thread->user_id = $request->new_user;
+        $thread->save();
         return redirect()->route('thread.show', [$thread]);
     }
 

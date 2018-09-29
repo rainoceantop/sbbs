@@ -7,9 +7,6 @@
 
 @section('content')
 
-
-
-
 <div class="row">
     @include('inc.card-center')
     <section class="col-lg-10 d-lg-block right">
@@ -164,12 +161,14 @@
                                                                         <input type="text" name="tagGroupName" class="form-control" placeholder="标签组名称" value="{{ $tagGroup->name }}" required>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <textarea name="tagNames" rows="8" class="form-control" placeholder="标签编辑域" required>@foreach($tagGroup->tags as $tag){{  $tag->identity }} , {{ $tag->name }} , {{ $tag->color }}@php echo " ;\n"; @endphp@endforeach</textarea>
-                                                                        <small class="text-muted">每一行都是一个标签，左边是标签名，右边是标签颜色，用英文逗号隔开，末尾加英文分号。如：
+                                                                        <textarea name="tagNames" rows="8" class="form-control" placeholder="标签编辑域" required>@foreach($tagGroup->tags as $tag){{  $tag->identity }} | {{ $tag->name }} | {{ $tag->color }}@php echo " ;\n"; @endphp@endforeach</textarea>
+                                                                        <small class="text-muted">每一行都是一个标签，最左边是标签的唯一标识，中间是标签名，右边是标签颜色（十六进制，英文单词，rgba均可），用竖杠“|”隔开，末尾加英文分号。格式需严格按照要求。标签的唯一标识不能相同，否则会替换调。如需删除该标识，请前往<a href="{{ route('tag.index') }}">标签管理</a>。设置标签例子：
                                                                             <br>
-                                                                            1, 功能增强 , blue ;
+                                                                            1 | 功能增强 | #12A3BA ;
                                                                             <br>
-                                                                            2, 风格模板 , orange ;
+                                                                            2 | 风格模板 | orange ;
+                                                                            <br>
+                                                                            3 | 文档教程 | rgba(0, 0, 0, 0.4) ;
                                                                         </small>
                                                                     </div>
                                                                     <hr>

@@ -14,13 +14,7 @@ window.Vue = require('vue')
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-// Vue.component('example-component', require('./components/ExampleComponent.vue'))
-Vue.component('home-page', require('./components/HomePage.vue'))
-Vue.component('card-intro', require('./components/CardIntro.vue'))
-Vue.component('card-forum', require('./components/CardForum.vue'))
-Vue.component('card-user', require('./components/CardUser.vue'))
-Vue.component('thread-detail', require('./components/ThreadDetail.vue'))
-Vue.component('thread-create-form', require('./components/ThreadCreate.vue'))
+
 const app = new Vue({
     el: '#app'
 });

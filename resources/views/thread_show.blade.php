@@ -61,6 +61,7 @@
             @can('thread-update', $thread)
             <div>
                 <a class="mr-3" href="{{ route('thread.edit', [$thread->id]) }}">编辑</a>
+                <!-- 如果板块下有标签，显示修改标签按钮 -->
                 @if(!empty($thread->forum->tagGroups()->get()->toArray()))
                 <a class="mr-3" href="/" data-toggle="modal" data-target=".edit-tags-button">标签</a>
                 @endif
@@ -71,29 +72,52 @@
                         <h5>{{ $thread->title }}：标签修改</h5>
                         <hr>
                         <form action="{{ route('thread.tags.edit') }}" method="post">
-                        @csrf
-                        <input type="hidden" name="thread_id" value="{{ $thread->id }}">
-                        @foreach($thread->forum->tagGroups as $tagGroup)
-                            <div class="mb-3">
-                            <span class="text-muted">{{ $tagGroup->name }}：</span>
-                            @foreach($tagGroup->tags as $tag)
-                            <div class="custom-control custom-checkbox custom-control-inline">
-                                <input class="custom-control-input" id="tag-{{ $tag->identity }}" type="checkbox" name="tags[]" @if(in_array($tag->identity, array_column($thread->tags->toArray(), 'identity'))) checked @endif value="{{ $tag->identity }}">
-                                <label class="custom-control-label" for="tag-{{ $tag->identity }}">{{ $tag->name }}</label>
-                            </div>
+                            @csrf
+                            <input type="hidden" name="thread_id" value="{{ $thread->id }}">
+                            @foreach($thread->forum->tagGroups as $tagGroup)
+                                <div class="mb-3">
+                                <span class="text-muted">{{ $tagGroup->name }}：</span>
+                                @foreach($tagGroup->tags as $tag)
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input class="custom-control-input" id="tag-{{ $tag->identity }}" type="checkbox" name="tags[]" @if(in_array($tag->identity, array_column($thread->tags->toArray(), 'identity'))) checked @endif value="{{ $tag->identity }}">
+                                    <label class="custom-control-label" for="tag-{{ $tag->identity }}">{{ $tag->name }}</label>
+                                </div>
+                                @endforeach
+                                </div>
                             @endforeach
-                            </div>
-                        @endforeach
-                        <hr>
+                            <hr>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success btn-block form-control">修改</button>
                             </div>    
                         </form>
-
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('thread.edit', [$thread->id]) }}">负责人</a>
+                <!-- 更换负责人 -->
+                <a href="/" data-toggle="modal" data-target=".change-thread-user-button">负责人</a>
+                <!-- modal -->
+                <div class="modal fade change-thread-user-button">
+                    <div class="modal-dialog">
+                        <div class="modal-content card-body">
+                            <h5>{{ $thread->title }}：选择负责人</h5>
+                            <form action="{{ route('thread.user.edit') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="thread_id" value="{{ $thread->id }}">
+                            <hr>
+                            @foreach(App\User::all() as $user)
+                                <div class="custom-control custom-radio mb-1">
+                                    <input type="radio" @if($thread->user_id == $user->id) checked @endif id="user-{{ $user->id }}" name="new_user" class="custom-control-input" value="{{ $user->id }}">
+                                    <label class="custom-control-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
+                                </div>
+                            @endforeach
+                            <hr>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-block btn-success">修改</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
             @endcan
             @endif
