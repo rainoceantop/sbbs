@@ -182,7 +182,7 @@
                                             <div>
                                                 权限：
                                                 @foreach($userGroup->permissions as $permission)
-                                                <a href="/">{{ $permission->name }}</a>
+                                                <span class="mr-2">{{ $permission->name }}</span>
                                                 @endforeach
                                             </div>
                                             <!-- 一行右边 -->
