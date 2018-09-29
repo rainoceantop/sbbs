@@ -165,7 +165,7 @@
                         @if($reply->index != 0)
                         <blockquote class="blockquote mb-1">
                             <p class="mb-0 small">{{ App\Reply::find($reply->index)->body }}</p>
-                            <footer class="blockquote-footer text-right"><cite class="small"><img src="{{ asset(App\User::find($reply->to_user_id)->avatar) }}" class="user-img-5">{{ App\User::find($reply->from_user_id)->name }}</cite></footer>
+                            <footer class="blockquote-footer text-right"><cite class="small"><img src="{{ asset(App\User::find($reply->to_user_id)->avatar) }}" class="user-img-5">{{ App\User::find($reply->to_user_id)->name }}</cite></footer>
                         </blockquote>
                         @endif
                         {!! $reply->body !!}
