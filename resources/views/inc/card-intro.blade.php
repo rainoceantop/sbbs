@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card d-none d-lg-block d-md-none d-sm-none">
     <div class="m-3">
         <h5 class="text-center">
             深圳市软信通网络科技有限公司

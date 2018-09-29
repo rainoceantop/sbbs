@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card d-none d-lg-block d-md-none d-sm-none">
     <div class="m-3">
         <div class="user-logo text-center">
             <img class="user-img-2 mb-2" src="{{asset($thread->user->avatar)}}" />

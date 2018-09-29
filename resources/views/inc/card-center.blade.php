@@ -1,4 +1,4 @@
-<section class="col-lg-2 hidden-md hidden-sm left">
+<section class="col-lg-2 d-none d-lg-block d-md-none d-sm-none left">
     <div class="card">
         <div class="card-body text-center">
             <img src="{{ asset( $user->avatar ) }}" class="user-img-2">

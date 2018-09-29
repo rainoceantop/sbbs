@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card d-none d-lg-block d-md-none d-sm-none">
     <div class="m-3">
         <div class="forum-logo">
             <img class="w-100 img-responsive" src="{{ asset('imgs/forum.jpg') }}" />
@@ -26,7 +26,7 @@
     </div>
 </div>
 
-<div class="card mt-3">
+<div class="card mt-3 d-none d-lg-block d-md-none d-sm-none">
     <div class="card-body">
         <h6 class="card-title">
             版主：

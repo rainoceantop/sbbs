@@ -99,7 +99,7 @@ $have_forum_id = isset($forum_id);
                         @yield('main')
                     </section>
                     <section class="col-lg-3 d-lg-block right">
-                        <a role="button" class="btn btn-primary btn-block mb-3" @if($have_forum_id) href="{{ url('thread/create?fid='.$forum_id) }}" @endif>发新帖</a>
+                        <a role="button" class="btn btn-primary btn-block mb-3 d-none d-lg-block d-md-none d-sm-none" @if($have_forum_id) href="{{ url('thread/create?fid='.$forum_id) }}" @endif>发新帖</a>
                         @yield('aside')
                     </section>
                 </div>
