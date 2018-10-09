@@ -13,10 +13,11 @@ class CreateForumsTable extends Migration
      */
     public function up()
     {
+        // 创建板块表
         Schema::create('forums', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->text('description');
+            $table->string('name'); // 板块的名称
+            $table->text('description'); // 介绍
             $table->timestamps();
         });
     }

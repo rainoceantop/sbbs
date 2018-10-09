@@ -13,13 +13,14 @@ class CreateTagGroupsTable extends Migration
      */
     public function up()
     {
+        // 创建标签组表
         Schema::create('tag_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('forum_id');
-            $table->string('name');
+            $table->unsignedInteger('forum_id'); // 所属板块id
+            $table->string('name'); // 标签组名称
             $table->timestamps();
 
-            $table->foreign('forum_id')->references('id')->on('forums')->onDelete('cascade');
+            $table->foreign('forum_id')->references('id')->on('forums')->onDelete('cascade'); // 外键，关联板块id，同步删除
         });
     }
 

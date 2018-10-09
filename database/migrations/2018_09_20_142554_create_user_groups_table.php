@@ -13,9 +13,10 @@ class CreateUserGroupsTable extends Migration
      */
     public function up()
     {
+        // 创建用户组表
         Schema::create('user_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name'); // 用户组名称
             $table->timestamps();
         });
     }
