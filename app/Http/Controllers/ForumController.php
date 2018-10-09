@@ -28,7 +28,10 @@ class ForumController extends Controller
             $forum['notJoinYetUsersId'] = array_diff(array_column(User::all()->toArray(), 'id'), array_column($forum->administrators->toArray(), 'id'));
         }
 
-        return view('admin_forums')->with('forums', $forums)->with('user', Auth::user())->with('is_forum_admin', $is_forum_admin)->with('category_id', $category_id);
+        return view('admin_forums')->with('forums', $forums)
+                                   ->with('user', Auth::user())
+                                   ->with('is_forum_admin', $is_forum_admin)
+                                   ->with('category_id', $category_id);
     }
 
     // 存储板块
